@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { fetchSubstackPosts } from '../lib/substack.js';
+
+const essays = (await getCollection('essays', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const substackPosts = await fetchSubstackPosts();
+---
+<Base title="Just Asking Questions">
+  <h1>Just Asking Questions</h1>
+
+  <section>
+    <h2>Essays</h2>
+    {essays.length === 0 && <p>No essays yet.</p>}
+    <ul>
+      {essays.map((e) => (
+        <li>
+          <a href={`/essays/${e.id}/`}>{e.data.title}</a>
+          <small> — {e.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</small>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  {substackPosts.length > 0 && (
+    <section>
+      <h2>Latest from the Substack</h2>
+      <ul>
+        {substackPosts.slice(0, 5).map((p) => (
+          <li><a href={p.link}>{p.title}</a></li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Base>

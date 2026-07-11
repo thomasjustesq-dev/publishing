@@ -1,0 +1,22 @@
+/* Mirrors brand/tokens.json — keep the two in sync. */
+:root {
+  --color-background: #faf8f4;
+  --color-surface: #ffffff;
+  --color-ink: #1a1a1a;
+  --color-ink-muted: #5c5c5c;
+  --color-accent: #b3412f;
+  --color-accent-soft: #f3ded9;
+  --color-rule: #e2ddd4;
+
+  --font-display: Georgia, 'Times New Roman', serif;
+  --font-body: Georgia, 'Times New Roman', serif;
+  --font-ui: system-ui, sans-serif;
+
+  --size-base: 1.125rem;
+  --size-h1: 2.5rem;
+  --size-h2: 1.75rem;
+  --size-h3: 1.25rem;
+
+  --measure: 42rem;
+  --radius: 4px;
+}
