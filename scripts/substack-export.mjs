@@ -50,7 +50,9 @@ function inline(s) {
 
 const out = [];
 const slug = basename(file).replace(/\.mdx?$/, '');
-const canonical = fm.canonical || (siteUrl ? `${siteUrl.replace(/\/$/, '')}/essays/${slug}/` : null);
+let canonical = fm.canonical || (siteUrl ? `${siteUrl.replace(/\/$/, '')}/essays/${slug}/` : null);
+// UTM-tag the canonical link so site analytics attribute this traffic to the newsletter
+if (canonical) canonical += `${canonical.includes('?') ? '&' : '?'}utm_source=substack&utm_medium=email&utm_campaign=${encodeURIComponent(slug)}`;
 
 if (fm.title) out.push(`<h1>${inline(fm.title)}</h1>`);
 if (canonical) {
