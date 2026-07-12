@@ -1,8 +1,10 @@
 ---
-// Base shell for every page. Replace/extend this with the Claude-designed layout —
-// keep all colors/fonts coming from tokens.css so the brand kit stays authoritative.
+// Base shell — implements the Just Asking Questions brand kit handoff: percontation-point
+// mark, EB Garamond/Newsreader/IBM Plex Mono, oxblood accent, light/dark toggle.
+// Deferred: dedicated site screens beyond home/essay — see brand/tokens.json note.
 import '../styles/tokens.css';
-const { title = 'Just Asking Questions', description = '' } = Astro.props;
+const { title = 'Just Asking Questions', description = '', ogImage = null } = Astro.props;
+const fontsUrl = "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap";
 ---
 <!doctype html>
 <html lang="en">
@@ -11,44 +13,124 @@ const { title = 'Just Asking Questions', description = '' } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href={fontsUrl} />
+    <script is:inline>
+      (function () {
+        var saved = localStorage.getItem('jaq-theme');
+        var theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
     {import.meta.env.PROD && <script is:inline defer src="/_vercel/insights/script.js"></script>}
   </head>
   <body>
     <header class="masthead">
-      <a href="/" class="wordmark">Just Asking Questions</a>
+      <a href="/" class="lockup">
+        <span class="mark-ring"><span class="mark-glyph">?</span></span>
+        <span class="wordmark">Just Asking Questions</span>
+      </a>
+      <nav class="nav">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" type="button">☾</button>
+        <a class="subscribe-btn" href="https://thomasjustaskingquestions.substack.com/subscribe" target="_blank" rel="noopener">Subscribe</a>
+      </nav>
     </header>
+
     <main>
       <slot />
     </main>
+
     <footer class="colophon">
-      <p>&copy; Just Asking Questions · <a href="https://thomasjustaskingquestions.substack.com">Subscribe on Substack</a></p>
+      <span class="mark-bare">?</span>
+      <p class="byline">THOMAS M. JUST · NO VERDICTS WITHHELD</p>
+      <p class="copyright">&copy; {new Date().getFullYear()} · <a href="https://thomasjustaskingquestions.substack.com">Subscribe on Substack</a></p>
     </footer>
+
+    <script is:inline>
+      var btn = document.getElementById('theme-toggle');
+      function sync() { btn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀' : '☾'; }
+      sync();
+      btn.addEventListener('click', function () {
+        var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('jaq-theme', next);
+        sync();
+      });
+    </script>
   </body>
 </html>
 
 <style is:global>
+  * { box-sizing: border-box; }
   body {
     margin: 0;
-    background: var(--color-background);
-    color: var(--color-ink);
+    background: var(--background);
+    color: var(--ink);
     font-family: var(--font-body);
-    font-size: var(--size-base);
-    line-height: 1.65;
+    font-size: 19px;
+    line-height: 1.75;
+    transition: background .2s, color .2s;
   }
-  main { max-width: var(--measure); margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-  a { color: var(--color-accent); }
-  h1, h2, h3 { font-family: var(--font-display); line-height: 1.2; }
-  h1 { font-size: var(--size-h1); }
-  h2 { font-size: var(--size-h2); }
-  h3 { font-size: var(--size-h3); }
+  main { max-width: var(--measure); margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+  a { color: var(--ink); text-decoration: none; border-bottom: 1px solid transparent; }
+  a:hover { color: var(--accent); border-bottom-color: rgba(122,46,42,.4); }
+  ::selection { background: var(--accent); color: var(--background); }
+
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 500; color: var(--ink); line-height: 1.1; }
+  h1 { font-size: clamp(44px, 6vw, 64px); line-height: 1.08; }
+  h2 { font-size: 30px; }
+  h3 { font-size: 22px; }
   img { max-width: 100%; height: auto; }
+
   blockquote {
-    margin: 1.5rem 0; padding: 0.25rem 1.25rem;
-    border-left: 3px solid var(--color-accent);
-    background: var(--color-accent-soft); color: var(--color-ink);
+    margin: 1.75rem 0; padding-left: 24px;
+    border-left: 2px solid var(--accent);
+    font-family: var(--font-display); font-weight: 500; font-style: italic;
+    font-size: 24px; line-height: 1.42; color: var(--ink);
   }
-  hr { border: 0; border-top: 1px solid var(--color-rule); margin: 2.5rem auto; width: 40%; }
-  .masthead { padding: 1.5rem 1.25rem; border-bottom: 1px solid var(--color-rule); text-align: center; }
-  .wordmark { font-family: var(--font-display); font-size: 1.4rem; text-decoration: none; color: var(--color-ink); }
-  .colophon { border-top: 1px solid var(--color-rule); padding: 1.5rem; text-align: center; font-family: var(--font-ui); font-size: 0.85rem; color: var(--color-ink-muted); }
+  hr { border: 0; text-align: center; margin: 3rem auto; }
+  hr::after {
+    content: '?'; display: inline-block; transform: scaleX(-1);
+    font-family: var(--font-display); font-weight: 500; font-size: 24px; color: var(--accent);
+  }
+  pre { background: var(--panel); border: 1px solid var(--hairline-strong); padding: 1rem; overflow-x: auto; font-family: var(--font-mono); font-size: 14px; }
+  code { font-family: var(--font-mono); }
+
+  .kicker {
+    font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .2em;
+    font-size: 11px; color: var(--faint); display: block; margin-bottom: .6rem;
+  }
+
+  .masthead {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--hairline);
+  }
+  .lockup { display: flex; align-items: center; gap: 14px; color: var(--ink); border-bottom: none !important; }
+  .mark-ring {
+    width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--ink);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .mark-glyph { display: inline-block; transform: scaleX(-1); font-family: var(--font-display); font-weight: 500; color: var(--accent); font-size: 22px; }
+  .wordmark { font-family: var(--font-display); font-weight: 500; font-size: 22px; }
+  .nav { display: flex; align-items: center; gap: 1.25rem; }
+  .theme-toggle {
+    font-family: var(--font-mono); border: 1px solid var(--hairline-strong); background: transparent;
+    color: var(--ink); width: 30px; height: 30px; cursor: pointer; border-radius: 0;
+  }
+  .subscribe-btn {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    background: var(--accent); color: var(--background) !important; padding: 8px 16px;
+    border: 1px solid var(--accent);
+  }
+  .subscribe-btn:hover { background: transparent; color: var(--accent) !important; }
+
+  .colophon { padding: 3rem 1.5rem 4rem; text-align: center; }
+  .mark-bare { display: inline-block; transform: scaleX(-1); font-family: var(--font-display); font-weight: 500; color: var(--accent); font-size: 32px; }
+  .byline { font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; color: var(--muted); margin-top: .5rem; }
+  .copyright { font-family: var(--font-mono); font-size: 11px; color: var(--faint); }
 </style>

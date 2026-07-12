@@ -1,22 +1,33 @@
-/* Mirrors brand/tokens.json — keep the two in sync. */
+/* Mirrors brand/tokens.json — keep the two in sync. Source: Just Asking Questions Brand Kit. */
+:root,
+html[data-theme='light'] {
+  --background: #FDFBF6;
+  --panel: #F3EEE6;
+  --ink: #1C1A17;
+  --muted: #5C554A;
+  --faint: #8A8272;
+  --accent: #7A2E2A;
+  --hairline: rgba(28,26,23,.14);
+  --hairline-strong: rgba(28,26,23,.25);
+}
+
+html[data-theme='dark'] {
+  --background: #191713;
+  --panel: #201C16;
+  --ink: #EDE7DA;
+  --muted: #9B9384;
+  --faint: #7A7264;
+  --accent: #C05B4E;
+  --hairline: rgba(237,231,218,.16);
+  --hairline-strong: rgba(237,231,218,.25);
+}
+html[data-theme='dark'] img.etching { filter: brightness(.82) sepia(.18) contrast(.96); }
+
 :root {
-  --color-background: #faf8f4;
-  --color-surface: #ffffff;
-  --color-ink: #1a1a1a;
-  --color-ink-muted: #5c5c5c;
-  --color-accent: #b3412f;
-  --color-accent-soft: #f3ded9;
-  --color-rule: #e2ddd4;
+  --font-display: 'EB Garamond', Georgia, serif;
+  --font-body: 'Newsreader', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
-  --font-display: Georgia, 'Times New Roman', serif;
-  --font-body: Georgia, 'Times New Roman', serif;
-  --font-ui: system-ui, sans-serif;
-
-  --size-base: 1.125rem;
-  --size-h1: 2.5rem;
-  --size-h2: 1.75rem;
-  --size-h3: 1.25rem;
-
-  --measure: 42rem;
-  --radius: 4px;
+  --measure: 660px;
+  --radius: 0;
 }

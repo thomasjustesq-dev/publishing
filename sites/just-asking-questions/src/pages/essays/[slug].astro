@@ -10,14 +10,32 @@ export async function getStaticPaths() {
 const { essay } = Astro.props;
 const { Content } = await render(essay);
 ---
-<Base title={essay.data.title} description={essay.data.description}>
-  <article>
-    {essay.data.hero && <img src={essay.data.hero} alt="" />}
+<Base title={essay.data.title} description={essay.data.description} ogImage={essay.data.hero}>
+  <article class="essay">
     <h1>{essay.data.title}</h1>
-    <p><small>{essay.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</small></p>
-    <Content />
+    {essay.data.description && <p class="dek">{essay.data.description}</p>}
+    <p class="byline">Thomas M. Just · {essay.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+
+    {essay.data.hero && <img class="etching" src={essay.data.hero} alt="" />}
+
+    <div class="essay-body">
+      <Content />
+    </div>
+
     {essay.data.substackUrl && (
-      <p><a href={essay.data.substackUrl}>Discuss this essay on Substack →</a></p>
+      <p class="discuss"><a href={essay.data.substackUrl}>Discuss this essay on Substack →</a></p>
     )}
   </article>
 </Base>
+
+<style>
+  .dek { font-style: italic; font-size: 19px; color: var(--muted); }
+  .byline { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--faint); margin-top: 1rem; }
+  .etching { margin: 2rem 0; }
+  .essay-body { font-size: 19px; line-height: 1.78; }
+  .essay-body > p:first-of-type::first-letter {
+    float: left; font-family: var(--font-display); font-weight: 500; font-size: 52px; line-height: .72;
+    color: var(--accent); padding: 8px 9px 0 0;
+  }
+  .discuss { margin-top: 3rem; font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+</style>

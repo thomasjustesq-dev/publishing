@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  
+  <rect class="bg" width="64" height="64"></rect>
+  <rect class="fg" width="64" height="7"></rect>
+  <rect class="fg" y="60.5" width="64" height="1.5"></rect>
+  <text class="fg" x="30" y="50" font-family="Georgia,&#39;Times New Roman&#39;,serif" font-size="46" text-anchor="middle">A<tspan fill="#B3271E">.</tspan></text>
+</svg>
