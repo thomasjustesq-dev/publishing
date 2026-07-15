@@ -1,0 +1,9 @@
+{
+  "pkg": "@thomasjust/ds-just-asking-questions",
+  "globalName": "JAQDesignSystem",
+  "shape": "package",
+  "buildCmd": "npx tsup",
+  "cssEntry": "src/styles.css",
+  "projectId": "f4fbded4-9fe6-4655-bf84-cfb7d232dce3",
+  "readmeHeader": ".design-sync/conventions.md"
+}
