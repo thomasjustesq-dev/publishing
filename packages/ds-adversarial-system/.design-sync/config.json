@@ -1,0 +1,9 @@
+{
+  "pkg": "@thomasjust/ds-adversarial-system",
+  "globalName": "TASDesignSystem",
+  "shape": "package",
+  "buildCmd": "npx tsup",
+  "cssEntry": "src/styles.css",
+  "readmeHeader": ".design-sync/conventions.md",
+  "projectId": "ae6846cc-4d34-46b0-bff2-2f8b55924f64"
+}

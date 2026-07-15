@@ -1,0 +1,104 @@
+/* The Adversarial System — design system stylesheet. Source: brand/tokens.json in the site repo. */
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root,
+html[data-theme='light'] {
+  --paper: #FDFDFB;
+  --ink: #111111;
+  --body: #26261F;
+  --body2: #3B3B36;
+  --body3: #4A4A45;
+  --muted: #8B8B85;
+  --muted2: #6B6B64;
+  --line: #DEDDD5;
+  --accent: #B3271E;
+  --accent-35: rgba(179,39,30,.35);
+  --accent-05: rgba(179,39,30,.05);
+  --paper-glass: rgba(253,253,251,.92);
+  --panel: #F7F6F2;
+}
+html[data-theme='dark'] {
+  --paper: #161513;
+  --ink: #F2F0E9;
+  --body: #DAD8CE;
+  --body2: #C8C6BB;
+  --body3: #B3B1A6;
+  --muted: #8A887F;
+  --muted2: #9C9A90;
+  --line: #35332D;
+  --accent: #D2493E;
+  --accent-35: rgba(210,73,62,.45);
+  --accent-05: rgba(210,73,62,.09);
+  --paper-glass: rgba(22,21,19,.92);
+  --panel: #1D1C19;
+}
+html[data-theme='dark'] img { filter: brightness(.9); }
+
+:root {
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'Spectral', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+.tas-root { background: var(--paper); color: var(--body); font-family: var(--font-body); }
+
+.tas-kicker {
+  font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .24em;
+  font-size: 11px; color: var(--accent); display: block; margin-bottom: .6rem;
+}
+
+.tas-volume-bar {
+  font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .18em;
+  font-size: 10.5px; color: var(--muted); display: flex; justify-content: space-between;
+  padding: 8px 32px; border-bottom: 1px solid var(--ink); background: var(--paper);
+}
+
+.tas-masthead {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.25rem 32px; border-bottom: 1px solid var(--line);
+  background: var(--paper-glass); backdrop-filter: blur(6px);
+}
+.tas-masthead .tas-wordmark { font-family: var(--font-display); font-size: 22px; color: var(--ink); text-decoration: none; }
+.tas-masthead nav { display: flex; align-items: center; gap: 1.5rem; font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+.tas-masthead nav a { color: var(--ink); text-decoration: none; }
+
+.tas-theme-toggle {
+  font-family: var(--font-mono); border: 1px solid var(--line); background: transparent;
+  color: var(--ink); width: 30px; height: 30px; cursor: pointer; border-radius: 0;
+}
+
+.tas-btn {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  padding: 8px 16px; border: 1px solid var(--accent); background: transparent; color: var(--accent);
+  cursor: pointer; display: inline-block; text-decoration: none;
+}
+.tas-btn--primary { background: var(--accent); color: var(--paper); }
+.tas-btn--primary:hover { background: transparent; color: var(--accent); }
+.tas-btn--secondary:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+.tas-rule-double { border-top: 2.5px solid var(--ink); margin-bottom: 4px; }
+.tas-rule-double::after { content: ''; display: block; border-top: 1.5px solid var(--ink); margin-top: 4px; }
+
+.tas-footer { padding: 2rem 32px 3rem; text-align: center; font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; color: var(--muted); }
+.tas-footer .tas-tagline { font-family: var(--font-display); font-style: italic; font-size: 18px; color: var(--body2); letter-spacing: 0; margin: 1rem 0; text-transform: none; }
+.tas-footer a { color: var(--muted); }
+
+.tas-essay-header h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(36px, 6vw, 64px); line-height: 1.08; letter-spacing: -.01em; color: var(--ink); margin: 0 0 .5rem; }
+.tas-essay-header .tas-dek { font-style: italic; font-size: 19px; color: var(--body2); max-width: 44ch; margin: 0 0 1rem; }
+.tas-essay-header .tas-byline { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); }
+
+.tas-pull-quote {
+  margin: 1.75rem 0; padding-left: 24px; border-left: 2px solid var(--accent);
+  font-family: var(--font-display); font-style: italic; font-size: 24px; line-height: 1.42; color: var(--ink);
+}
+
+.tas-docket-row { display: flex; align-items: baseline; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+.tas-docket-row .tas-docket-no { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: .1em; width: 4rem; flex-shrink: 0; }
+.tas-docket-row .tas-docket-title { color: var(--ink); font-family: var(--font-display); font-size: 22px; }
+.tas-docket-row:hover .tas-docket-title { color: var(--accent); }
+.tas-docket-row .tas-docket-date { margin-left: auto; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+
+.tas-drop-cap > p:first-of-type::first-letter {
+  float: left; font-family: var(--font-display); font-size: 52px; line-height: .72;
+  color: var(--accent); padding: 8px 9px 0 0;
+}
