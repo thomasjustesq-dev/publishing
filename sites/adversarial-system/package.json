@@ -9,6 +9,12 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "astro": "^5.0.0"
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^5.0.0",
+    "fast-xml-parser": "^4.5.0"
+  },
+  "optionalDependencies": {
+    "@esbuild/linux-x64": "0.27.7"
   }
 }

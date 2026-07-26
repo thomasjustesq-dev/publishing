@@ -5,7 +5,7 @@ import { fetchSubstackPosts } from '../lib/substack.js';
 
 const essays = (await getCollection('essays', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const substackPosts = await fetchSubstackPosts();
+const substackPosts = await fetchSubstackPosts(import.meta.env.SUBSTACK_FEED_URL || process.env.SUBSTACK_FEED_URL);
 ---
 <Base title="Just Asking Questions" description="Long-form essays by Thomas M. Just.">
   <h1>Just Asking Questions</h1>

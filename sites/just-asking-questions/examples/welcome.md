@@ -1,5 +1,5 @@
 ---
-title: "Welcome to The Adversarial System"
+title: "Welcome to Just Asking Questions"
 description: "A placeholder essay demonstrating the pipeline."
 date: 2026-07-10
 draft: true
@@ -9,7 +9,7 @@ This is a sample essay. It renders on the site with the full design, and
 `scripts/substack-export.mjs` turns it into a paste-ready Substack draft:
 
 ```sh
-node ../../scripts/substack-export.mjs src/content/essays/welcome.md --site-url https://theadversarialsystem.com
+node scripts/substack-export.mjs sites/just-asking-questions/examples/welcome.md --site-url https://just-asking-questions.com --stdout
 ```
 
 ## How it works

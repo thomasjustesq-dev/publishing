@@ -3,7 +3,19 @@
 // mark, EB Garamond/Newsreader/IBM Plex Mono, oxblood accent, light/dark toggle.
 // Deferred: dedicated site screens beyond home/essay — see brand/tokens.json note.
 import '../styles/tokens.css';
-const { title = 'Just Asking Questions', description = '', ogImage = null } = Astro.props;
+const {
+  title = 'Just Asking Questions',
+  description = '',
+  ogImage = '/brand/etching-diogenes.png',
+  type = 'website',
+  publishedTime = null,
+  modifiedTime = null,
+  jsonLd = null,
+} = Astro.props;
+const site = Astro.site || new URL(import.meta.env.PUBLIC_SITE_URL || 'https://just-asking-questions.com');
+const canonical = new URL(Astro.url.pathname, site).toString();
+const absoluteOgImage = ogImage ? new URL(ogImage, site).toString() : null;
+const rssUrl = new URL('/rss.xml', site).toString();
 const fontsUrl = "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap";
 ---
 <!doctype html>
@@ -13,10 +25,18 @@ const fontsUrl = "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title="Just Asking Questions RSS" href={rssUrl} />
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
-    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content={type} />
+    {absoluteOgImage && <meta property="og:image" content={absoluteOgImage} />}
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
     <meta name="twitter:card" content="summary_large_image" />
+    {absoluteOgImage && <meta name="twitter:image" content={absoluteOgImage} />}
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href={fontsUrl} />
@@ -36,7 +56,7 @@ const fontsUrl = "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght
         <span class="wordmark">Just Asking Questions</span>
       </a>
       <nav class="nav">
-        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" type="button">☾</button>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="false" type="button">☾</button>
         <a class="subscribe-btn" href="https://thomasjustaskingquestions.substack.com/subscribe" target="_blank" rel="noopener">Subscribe</a>
       </nav>
     </header>
@@ -53,7 +73,7 @@ const fontsUrl = "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght
 
     <script is:inline>
       var btn = document.getElementById('theme-toggle');
-      function sync() { btn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀' : '☾'; }
+      function sync() { btn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀' : '☾'; btn.setAttribute('aria-pressed', document.documentElement.getAttribute('data-theme') === 'dark' ? 'true' : 'false'); }
       sync();
       btn.addEventListener('click', function () {
         var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';

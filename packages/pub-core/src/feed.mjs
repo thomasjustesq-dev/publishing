@@ -23,16 +23,22 @@ const text = (value) => {
   return String(value).trim();
 };
 
-export async function fetchSubstackPosts(feedUrl = 'https://theadversarialsystem.substack.com/feed') {
+export async function fetchSubstackPosts(feedUrl, options = {}) {
+  const {
+    timeoutMs = 8000,
+    fetchImpl = fetch,
+    warn = console.warn,
+  } = options;
+
   if (!feedUrl || feedUrl.includes('YOURNAME')) return [];
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const res = await fetch(feedUrl, { signal: controller.signal });
-    if (!res.ok) {
-      console.warn(`[substack] feed unavailable: ${feedUrl} (${res.status})`);
+    const res = await fetchImpl(feedUrl, { signal: controller.signal });
+    if (!res || !res.ok) {
+      warn?.(`[pub-core] Substack feed unavailable: ${feedUrl} (${res?.status || 'no response'})`);
       return [];
     }
 
@@ -50,8 +56,8 @@ export async function fetchSubstackPosts(feedUrl = 'https://theadversarialsystem
       }))
       .filter((item) => item.title || item.link);
   } catch (error) {
-    const reason = error?.name === 'AbortError' ? 'timed out' : error?.message || error;
-    console.warn(`[substack] feed failed: ${feedUrl} (${reason})`);
+    const reason = error?.name === 'AbortError' ? `timed out after ${timeoutMs}ms` : error?.message || error;
+    warn?.(`[pub-core] Substack feed failed: ${feedUrl} (${reason})`);
     return [];
   } finally {
     clearTimeout(timeout);
