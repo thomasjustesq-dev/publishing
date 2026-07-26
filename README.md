@@ -75,8 +75,8 @@ publishing/
 
 ## Setup
 
-Use the workspace root for repo-wide checks and builds; each site remains a standard
-Astro project that can also be developed on its own:
+Use Node.js 22.12 or newer, then use the workspace root for repo-wide checks and
+builds; each site remains a standard Astro project that can also be developed on its own:
 
 ```sh
 npm install
