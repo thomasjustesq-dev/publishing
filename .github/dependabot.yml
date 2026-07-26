@@ -10,6 +10,8 @@ updates:
       # move with esbuild/rollup upgrades, not independently.
       - dependency-name: "@esbuild/linux-x64"
       - dependency-name: "@rollup/rollup-linux-x64-gnu"
+      - dependency-name: "typescript"
+        versions: [">=6.0.0"]
 
   - package-ecosystem: github-actions
     directory: /
