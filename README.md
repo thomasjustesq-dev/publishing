@@ -75,7 +75,8 @@ publishing/
 
 ## Setup
 
-Use the workspace root so the Astro sites can consume `@pub/core`:
+Use the workspace root for repo-wide checks and builds; each site remains a standard
+Astro project that can also be developed on its own:
 
 ```sh
 npm install
@@ -92,8 +93,9 @@ SUBSTACK_FEED_URL=https://thomasjustaskingquestions.substack.com/feed   # per si
 PUBLIC_SITE_URL=https://your-domain.com
 ```
 
-Deployment note: build from the repository root (or otherwise make `@pub/core`
-available) because both sites import the shared workspace package.
+Deployment note: the Astro sites are self-contained and can deploy from their site
+subdirectories. The workspace root is only required for repo-wide checks, design-system
+packaging, and the Substack export CLI.
 
 ## Brand kits
 

@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
-import { fetchSubstackPosts } from '@pub/core';
+import { fetchSubstackPosts } from '../lib/substack.js';
 
 const essays = (await getCollection('essays', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
