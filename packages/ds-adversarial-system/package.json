@@ -13,8 +13,12 @@
     },
     "./styles.css": "./dist/index.css"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsup"
+    "build": "tsup && node ../../scripts/copy-file.mjs src/styles.css dist/index.css",
+    "prepack": "npm run build"
   },
   "peerDependencies": {
     "react": "^18.0.0",

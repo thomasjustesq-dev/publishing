@@ -9,15 +9,36 @@ export async function getStaticPaths() {
 
 const { essay } = Astro.props;
 const { Content } = await render(essay);
+const site = Astro.site || new URL(import.meta.env.PUBLIC_SITE_URL || 'https://theadversarialsystem.com');
+const essayUrl = new URL(`/essays/${essay.id}/`, site).toString();
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: essay.data.title,
+  description: essay.data.description,
+  datePublished: essay.data.date.toISOString(),
+  dateModified: (essay.data.updated || essay.data.date).toISOString(),
+  author: { '@type': 'Person', name: 'Thomas M. Just' },
+  mainEntityOfPage: essayUrl,
+  image: essay.data.hero ? new URL(essay.data.hero, site).toString() : undefined,
+};
 ---
-<Base title={essay.data.title} description={essay.data.description} ogImage={essay.data.hero || '/social/og-card-1200x630.png'}>
+<Base
+  title={essay.data.title}
+  description={essay.data.description}
+  ogImage={essay.data.hero || '/social/og-card-1200x630.png'}
+  type="article"
+  publishedTime={essay.data.date.toISOString()}
+  modifiedTime={(essay.data.updated || essay.data.date).toISOString()}
+  jsonLd={articleJsonLd}
+>
   <article class="essay">
     <span class="kicker">Essay</span>
     <h1>{essay.data.title}</h1>
     {essay.data.description && <p class="dek">{essay.data.description}</p>}
     <p class="byline">Thomas M. Just · {essay.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
 
-    {essay.data.hero && <img class="cover-plate" src={essay.data.hero} alt="" />}
+    {essay.data.hero && <img class="cover-plate" src={essay.data.hero} alt="" decoding="async" />}
 
     <div class="essay-body">
       <Content />

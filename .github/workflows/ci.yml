@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20, 22]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install workspace dependencies
+        run: npm ci
+
+      - name: Check content and unit tests
+        run: npm run check
+
+      - name: Build packages and sites
+        run: npm run build
+
+      - name: Verify design-system package artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          for pkg in packages/ds-adversarial-system packages/ds-just-asking-questions; do
+            test -f "$pkg/dist/index.es.js"
+            test -f "$pkg/dist/index.d.ts"
+            test -f "$pkg/dist/index.css"
+            (cd "$pkg" && npm pack --dry-run > /tmp/$(basename "$pkg")-pack.log 2>&1)
+            grep -q 'dist/index.es.js' "/tmp/$(basename "$pkg")-pack.log"
+            grep -q 'dist/index.d.ts' "/tmp/$(basename "$pkg")-pack.log"
+            grep -q 'dist/index.css' "/tmp/$(basename "$pkg")-pack.log"
+          done

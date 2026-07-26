@@ -1,11 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
-import { fetchSubstackPosts } from '../lib/substack.js';
+import { fetchSubstackPosts } from '@pub/core';
 
 const essays = (await getCollection('essays', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const substackPosts = await fetchSubstackPosts();
+const substackPosts = await fetchSubstackPosts(import.meta.env.SUBSTACK_FEED_URL || process.env.SUBSTACK_FEED_URL);
 ---
 <Base title="The Adversarial System" description="Writing from the edge of AI, security, and liberty.">
   <span class="kicker">Docket</span>

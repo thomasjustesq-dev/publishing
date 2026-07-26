@@ -1,0 +1,23 @@
+{
+  "name": "publishing-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "sites/*"
+  ],
+  "scripts": {
+    "dev:jaq": "npm run dev --workspace just-asking-questions",
+    "dev:tas": "npm run dev --workspace adversarial-system",
+    "build": "npm run build:packages && npm run build:sites",
+    "build:packages": "npm run build --workspace @thomasjust/ds-adversarial-system && npm run build --workspace @thomasjust/ds-just-asking-questions",
+    "build:sites": "npm run build --workspace adversarial-system && npm run build --workspace just-asking-questions",
+    "check": "node scripts/check-content.mjs && node scripts/check-tokens.mjs && npm test",
+    "test": "node --test packages/pub-core/test/*.test.mjs",
+    "export:substack": "node scripts/substack-export.mjs"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3"
+  }
+}
