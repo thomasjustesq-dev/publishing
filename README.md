@@ -94,7 +94,8 @@ PUBLIC_SITE_URL=https://your-domain.com
 ```
 
 Deployment note: the Astro sites are self-contained and can deploy from their site
-subdirectories. The workspace root is only required for repo-wide checks, design-system
+subdirectories; each site keeps its own `package-lock.json` for standalone Vercel
+builds. The workspace root is only required for repo-wide checks, design-system
 packaging, and the Substack export CLI.
 
 ## Brand kits
