@@ -5,6 +5,11 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 10
+    ignore:
+      # Platform binaries are pinned to their parent package versions and must
+      # move with esbuild/rollup upgrades, not independently.
+      - dependency-name: "@esbuild/linux-x64"
+      - dependency-name: "@rollup/rollup-linux-x64-gnu"
 
   - package-ecosystem: github-actions
     directory: /
