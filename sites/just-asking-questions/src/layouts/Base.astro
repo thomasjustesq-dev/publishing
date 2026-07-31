@@ -3,6 +3,7 @@
 // mark, EB Garamond/Newsreader/IBM Plex Mono, oxblood accent, light/dark toggle.
 // Deferred: dedicated site screens beyond home/essay — see brand/tokens.json note.
 import '../styles/tokens.css';
+import { serializeJsonLd } from '@pub/core';
 const {
   title = 'Just Asking Questions',
   description = '',
@@ -19,7 +20,7 @@ const rssUrl = new URL('/rss.xml', site).toString();
 const fontsUrl = "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap";
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme-storage-key="jaq-theme">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -36,17 +37,11 @@ const fontsUrl = "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght
     {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
     <meta name="twitter:card" content="summary_large_image" />
     {absoluteOgImage && <meta name="twitter:image" content={absoluteOgImage} />}
-    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    {jsonLd && <script type="application/ld+json" set:html={serializeJsonLd(jsonLd)} />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href={fontsUrl} />
-    <script is:inline>
-      (function () {
-        var saved = localStorage.getItem('jaq-theme');
-        var theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-      })();
-    </script>
+    <script is:inline src="/theme-init.js"></script>
     {import.meta.env.PROD && <script is:inline defer src="/_vercel/insights/script.js"></script>}
   </head>
   <body>
@@ -71,17 +66,7 @@ const fontsUrl = "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght
       <p class="copyright">&copy; {new Date().getFullYear()} · <a href="https://thomasjustaskingquestions.substack.com">Subscribe on Substack</a></p>
     </footer>
 
-    <script is:inline>
-      var btn = document.getElementById('theme-toggle');
-      function sync() { btn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀' : '☾'; btn.setAttribute('aria-pressed', document.documentElement.getAttribute('data-theme') === 'dark' ? 'true' : 'false'); }
-      sync();
-      btn.addEventListener('click', function () {
-        var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('jaq-theme', next);
-        sync();
-      });
-    </script>
+    <script is:inline src="/theme-toggle.js"></script>
   </body>
 </html>
 
