@@ -23,23 +23,73 @@ const text = (value) => {
   return String(value).trim();
 };
 
+const SUBSTACK_HOST_SUFFIX = '.substack.com';
+
+export function validateSubstackFeedUrl(feedUrl, expectedHost) {
+  let url;
+
+  try {
+    url = new URL(feedUrl);
+  } catch {
+    throw new TypeError('Invalid Substack feed URL');
+  }
+
+  const normalizedExpectedHost = String(expectedHost || '').toLowerCase();
+  if (!normalizedExpectedHost.endsWith(SUBSTACK_HOST_SUFFIX)) {
+    throw new TypeError('Expected host must be a Substack hostname');
+  }
+  if (url.protocol !== 'https:') {
+    throw new TypeError('Substack feed URL must use HTTPS');
+  }
+  if (url.username || url.password) {
+    throw new TypeError('Substack feed URL must not contain credentials');
+  }
+  if (url.port) {
+    throw new TypeError('Substack feed URL must not use a custom port');
+  }
+  if (url.hostname.toLowerCase() !== normalizedExpectedHost) {
+    throw new TypeError('Substack feed URL host is not allowed');
+  }
+
+  return url;
+}
+
 export async function fetchSubstackPosts(feedUrl, options = {}) {
   const {
     timeoutMs = 8000,
     fetchImpl = fetch,
     warn = console.warn,
+    expectedHost,
   } = options;
 
   if (!feedUrl || feedUrl.includes('YOURNAME')) return [];
+
+  let validatedUrl;
+  try {
+    validatedUrl = validateSubstackFeedUrl(feedUrl, expectedHost);
+  } catch (error) {
+    warn?.(`[pub-core] Rejected Substack feed URL (${error.message})`);
+    return [];
+  }
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const res = await fetchImpl(feedUrl, { signal: controller.signal });
-    if (!res || !res.ok) {
-      warn?.(`[pub-core] Substack feed unavailable: ${feedUrl} (${res?.status || 'no response'})`);
+    const res = await fetchImpl(validatedUrl, {
+      signal: controller.signal,
+      redirect: 'manual',
+    });
+    if (res?.redirected || (res?.status >= 300 && res?.status < 400)) {
+      warn?.('[pub-core] Rejected redirect from Substack feed');
       return [];
+    }
+    if (!res || !res.ok) {
+      warn?.(`[pub-core] Substack feed unavailable (${res?.status || 'no response'})`);
+      return [];
+    }
+    if (res.url) {
+      validateSubstackFeedUrl(res.url, expectedHost);
     }
 
     const xml = await res.text();
@@ -57,7 +107,7 @@ export async function fetchSubstackPosts(feedUrl, options = {}) {
       .filter((item) => item.title || item.link);
   } catch (error) {
     const reason = error?.name === 'AbortError' ? `timed out after ${timeoutMs}ms` : error?.message || error;
-    warn?.(`[pub-core] Substack feed failed: ${feedUrl} (${reason})`);
+    warn?.(`[pub-core] Substack feed failed (${reason})`);
     return [];
   } finally {
     clearTimeout(timeout);
