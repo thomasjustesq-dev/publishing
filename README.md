@@ -104,3 +104,7 @@ packaging, and the Substack export CLI.
 as CSS custom properties that every layout and component reads. When the Claude-designed
 brand kit is finalized, update both files (or ask Claude Code to sync them) and the whole
 site — and any social/Substack graphics generated from the tokens — updates with it.
+
+## Agent coordination
+
+Multi-agent work uses claim-first process docs: [`CLAUDE.md`](CLAUDE.md), [`docs/WORKBOARD.md`](docs/WORKBOARD.md), [`docs/ASSIGNMENT.md`](docs/ASSIGNMENT.md).
