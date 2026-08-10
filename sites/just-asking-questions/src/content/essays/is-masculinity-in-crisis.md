@@ -9,7 +9,8 @@ imported: true
 importSource: "https://thomasjustaskingquestions.substack.com/p/is-masculinity-in-crisis"
 hero: "/essays/is-masculinity-in-crisis/cover.webp"
 heroAlt: "Cover image for Is Masculinity in Crisis?"
-tags: []
+tags: ["masculinity", "culture", "veterans"]
+related: ["the-stoicism-question", "from-911-to-the-bench-a-journey-of"]
 ---
 
 My name is Thomas Just, and I am just asking questions.

@@ -18,6 +18,7 @@ export function essayCollectionSchema(z) {
     audioUrl: z.string().url().optional(),
     videoUrl: z.string().url().optional(),
     series: z.string().optional(),
+    related: z.array(z.string()).default([]),
     imported: z.boolean().default(false),
     importSource: z.string().url().optional(),
     paywalled: z.boolean().default(false),
@@ -35,3 +36,14 @@ export const FORMAT_LABELS = {
   video: 'Video',
   teaser: 'Subscriber preview',
 };
+
+/** Approximate reading time in minutes (200 wpm). */
+export function readingTimeMinutes(text, wpm = 200) {
+  const words = String(text || '')
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/[#>*_`\[\]()!-]/g, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+  return Math.max(1, Math.round(words / wpm));
+}

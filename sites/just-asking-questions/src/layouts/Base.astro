@@ -14,6 +14,7 @@ const {
   publishedTime = null,
   modifiedTime = null,
   jsonLd = null,
+  preloadImage = null,
 } = Astro.props;
 const site = Astro.site || new URL(import.meta.env.PUBLIC_SITE_URL || siteConfig.siteUrl);
 const canonical = new URL(Astro.url.pathname, site).toString();
@@ -43,26 +44,30 @@ const jsonLdBlocks = jsonLd == null ? [] : Array.isArray(jsonLd) ? jsonLd : [jso
       <script type="application/ld+json" set:html={serializeJsonLd(block)} />
     ))}
     <link rel="icon" href={siteConfig.favicon} type="image/svg+xml" />
+    {preloadImage && <link rel="preload" as="image" href={preloadImage} />}
     <script is:inline src="/theme-init.js"></script>
     {import.meta.env.PROD && <script is:inline defer src="/_vercel/insights/script.js"></script>}
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     <DraftBanner />
     <header class="masthead">
       <a href="/" class="lockup">
         <span class="mark-ring"><span class="mark-glyph">?</span></span>
         <span class="wordmark">{siteConfig.name}</span>
       </a>
-      <nav class="nav">
+      <nav class="nav" aria-label="Primary">
         <a href="/">Essays</a>
         <a href="/tags/">Tags</a>
+        <a href="/search/">Search</a>
+        <a href="/author/">Author</a>
         <a href="/about/">About</a>
         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="false" type="button">☾</button>
         <a class="subscribe-btn" href={siteConfig.subscribeUrl} target="_blank" rel="noopener">Subscribe</a>
       </nav>
     </header>
 
-    <main>
+    <main id="main" tabindex="-1">
       <slot />
     </main>
 
@@ -130,9 +135,24 @@ const jsonLdBlocks = jsonLd == null ? [] : Array.isArray(jsonLd) ? jsonLd : [jso
   .wordmark { font-family: var(--font-display); font-weight: 500; font-size: 22px; }
   .nav { display: flex; align-items: center; gap: 1.25rem; font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
   .nav a { color: var(--ink); border-bottom: none; }
+  .skip-link {
+    position: absolute; left: -9999px; top: 0; z-index: 1000;
+    background: var(--accent); color: var(--background); padding: 0.5rem 1rem;
+    font-family: var(--font-mono); font-size: 12px; text-transform: uppercase;
+  }
+  .skip-link:focus { left: 0.5rem; top: 0.5rem; border-bottom: none; }
   .theme-toggle {
     font-family: var(--font-mono); border: 1px solid var(--hairline-strong); background: transparent;
     color: var(--ink); width: 30px; height: 30px; cursor: pointer; border-radius: 0;
+  }
+  .theme-toggle:focus-visible, .nav a:focus-visible, .subscribe-btn:focus-visible, .skip-link:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+  @media print {
+    .masthead, .colophon, .draft-banner, .skip-link, .theme-toggle, .subscribe-btn { display: none !important; }
+    body { background: white; color: black; font-size: 12pt; }
+    main { max-width: 100%; padding: 0; }
+    a { color: black; text-decoration: underline; border: 0; }
   }
   .subscribe-btn {
     font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;

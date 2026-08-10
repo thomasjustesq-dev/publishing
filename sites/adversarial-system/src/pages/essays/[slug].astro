@@ -6,10 +6,12 @@ import EssayPaywallNote from '../../components/EssayPaywallNote.astro';
 import EssayMedia from '../../components/EssayMedia.astro';
 import EssayFooter from '../../components/EssayFooter.astro';
 import DropCapBody from '../../components/DropCapBody.astro';
+import RelatedEssays from '../../components/RelatedEssays.astro';
+import ReadingProgress from '../../components/ReadingProgress.astro';
 import { getCollection, render } from 'astro:content';
-import { articleJsonLd } from '@pub/site-kit';
+import { articleJsonLd, readingTimeMinutes, pickRelated } from '@pub/site-kit';
 import { siteConfig } from '../../site.config.js';
-import { essayFilter } from '../../lib/essays.js';
+import { essayFilter, publishedOnly } from '../../lib/essays.js';
 
 export async function getStaticPaths() {
   const essays = await getCollection('essays', essayFilter);
@@ -21,7 +23,12 @@ const { Content } = await render(essay);
 const site = Astro.site || new URL(import.meta.env.PUBLIC_SITE_URL || siteConfig.siteUrl);
 const essayUrl = new URL(`/essays/${essay.id}/`, site).toString();
 const format = essay.data.format || 'essay';
-const ogCandidate = essay.data.hero?.replace(/cover\.webp$/, 'og.webp');
+const allPublished = await getCollection('essays', publishedOnly);
+const related = pickRelated(essay, allPublished, 3);
+const minutes = readingTimeMinutes(essay.body || essay.data.description || '');
+const ogCandidate = essay.data.hero?.includes('/essays/')
+  ? essay.data.hero.replace(/cover\.webp$/, 'og.webp')
+  : null;
 const heroAbs = essay.data.hero ? new URL(essay.data.hero, site).toString() : undefined;
 const jsonLd = articleJsonLd({
   title: essay.data.title,
@@ -33,6 +40,8 @@ const jsonLd = articleJsonLd({
   author: siteConfig.author,
 });
 const dropCap = format === 'essay' && !essay.data.paywalled;
+const isMedia = format === 'podcast' || format === 'video';
+const preloadHero = essay.data.hero || null;
 ---
 <Base
   title={essay.data.title}
@@ -42,32 +51,57 @@ const dropCap = format === 'essay' && !essay.data.paywalled;
   publishedTime={essay.data.date.toISOString()}
   modifiedTime={(essay.data.updated || essay.data.date).toISOString()}
   jsonLd={jsonLd}
+  preloadImage={preloadHero}
 >
-  <article class="essay">
+  {format === 'essay' && !essay.data.paywalled && <ReadingProgress />}
+
+  <article class:list={['essay', { 'essay-media': isMedia }]}>
     <EssayHeader
       title={essay.data.title}
       description={essay.data.description}
       date={essay.data.date}
       format={format}
+      minutes={minutes}
     />
 
     {(essay.data.paywalled || format === 'teaser') && (
       <EssayPaywallNote substackUrl={essay.data.substackUrl} />
     )}
 
+    <EssayHero src={essay.data.hero} alt={essay.data.heroAlt || ''} priority={true} />
+
     <EssayMedia
       format={format}
       audioUrl={essay.data.audioUrl}
       videoUrl={essay.data.videoUrl}
       substackUrl={essay.data.substackUrl}
+      embed={isMedia}
     />
 
-    <EssayHero src={essay.data.hero} alt={essay.data.heroAlt || ''} />
-
-    <DropCapBody enabled={dropCap}>
-      <Content />
-    </DropCapBody>
+    {!isMedia && (
+      <DropCapBody enabled={dropCap}>
+        <Content />
+      </DropCapBody>
+    )}
+    {isMedia && (
+      <div class="media-body">
+        <Content />
+      </div>
+    )}
 
     <EssayFooter tags={essay.data.tags} series={essay.data.series} substackUrl={essay.data.substackUrl} />
+    <RelatedEssays essays={related} />
   </article>
 </Base>
+
+<style>
+  .media-body { font-size: 18px; line-height: 1.7; color: var(--muted); max-width: 40ch; }
+  .essay-media :global(.essay-hero) { max-width: 520px; margin-left: auto; margin-right: auto; display: block; }
+  @media print {
+    :global(.masthead), :global(.colophon), :global(.draft-banner), :global(.theme-toggle), :global(.subscribe-btn) {
+      display: none !important;
+    }
+    :global(main) { max-width: 100%; padding: 0; }
+    :global(a) { color: inherit; text-decoration: underline; }
+  }
+</style>

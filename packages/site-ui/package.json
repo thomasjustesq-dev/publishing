@@ -1,0 +1,13 @@
+{
+  "name": "@pub/site-ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared presentation helpers for JAQ/TAS. Brand-specific Astro components stay in each site.",
+  "exports": {
+    ".": "./src/index.mjs"
+  },
+  "dependencies": {
+    "@pub/site-kit": "*"
+  }
+}

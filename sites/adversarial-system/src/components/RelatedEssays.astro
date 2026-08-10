@@ -1,0 +1,22 @@
+---
+const { essays = [] } = Astro.props;
+---
+{essays.length > 0 && (
+  <section class="related">
+    <span class="kicker">Related</span>
+    <ul>
+      {essays.map((e) => (
+        <li>
+          <a href={`/essays/${e.id}/`}>{e.data.title}</a>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
+<style>
+  .related { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--line); }
+  .related ul { list-style: none; padding: 0; margin: 0.75rem 0 0; }
+  .related li { padding: 0.65rem 0; border-bottom: 1px solid var(--line); }
+  .related a { font-family: var(--font-display); font-size: 20px; font-weight: 500; }
+</style>

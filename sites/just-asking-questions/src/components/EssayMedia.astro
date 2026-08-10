@@ -1,21 +1,54 @@
 ---
-const { format, audioUrl, videoUrl, substackUrl } = Astro.props;
+const { format, audioUrl, videoUrl, substackUrl, embed = false } = Astro.props;
 const href = audioUrl || videoUrl || substackUrl;
+const embedSrc = substackUrl ? `${substackUrl.replace(/\/$/, '')}/embed` : null;
 ---
-{format === 'podcast' && href && (
-  <p class="media-cta"><a href={href} target="_blank" rel="noopener">Listen on Substack →</a></p>
+{format === 'podcast' && (
+  <div class="media-block">
+    {href && <p class="media-cta"><a href={href} target="_blank" rel="noopener">Listen on Substack →</a></p>}
+    {embed && embedSrc && (
+      <iframe
+        class="substack-embed"
+        src={embedSrc}
+        title="Substack podcast embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+    )}
+  </div>
 )}
-{format === 'video' && href && (
-  <p class="media-cta"><a href={href} target="_blank" rel="noopener">Watch on Substack →</a></p>
+{format === 'video' && (
+  <div class="media-block">
+    {href && <p class="media-cta"><a href={href} target="_blank" rel="noopener">Watch on Substack →</a></p>}
+    {embed && embedSrc && (
+      <iframe
+        class="substack-embed"
+        src={embedSrc}
+        title="Substack video embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+    )}
+  </div>
 )}
 
 <style>
+  .media-block { margin: 1.5rem 0 2rem; }
   .media-cta {
-    margin: 1.5rem 0;
     font-family: var(--font-mono);
     font-size: 12px;
     letter-spacing: .1em;
     text-transform: uppercase;
   }
   .media-cta a { color: var(--accent); }
+  .substack-embed {
+    width: 100%;
+    min-height: 320px;
+    border: 1px solid var(--hairline-strong);
+    margin-top: 1rem;
+    background: var(--panel);
+  }
+  @media print {
+    .substack-embed { display: none; }
+  }
 </style>

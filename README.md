@@ -159,3 +159,13 @@ sites keep short unscoped names (`just-asking-questions`, `adversarial-system`).
 | `tags` | no | powers `/tags/` |
 | `audioUrl` / `videoUrl` | no | external link-outs |
 | `imported` / `importSource` | no | Substack import metadata |
+
+
+## Search, CMS, and ops
+
+- **Search:** Pagefind runs after each site build (`/search/`).
+- **CMS:** Decap admin shell at `/admin/` (GitHub OAuth required for edits).
+- **Drift:** `npm run substack:drift -- --site jaq` lists Substack posts not on-site.
+- **Ship:** `npm run ship -- --site jaq --slug my-essay` validates one essay then `publish:check`.
+- **Zod:** root test helper is Zod 4; Astro content still uses `astro/zod`.
+- **TS 6:** no active TypeScript app packages (design archives only) — no tsup pin change required.

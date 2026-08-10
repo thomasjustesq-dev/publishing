@@ -8,7 +8,8 @@ format: "teaser"
 paywalled: true
 imported: true
 importSource: "https://thomasjustaskingquestions.substack.com/p/from-911-to-the-bench-a-journey-of"
-tags: ["substack-paid"]
+tags: ["veterans", "biography", "service", "substack-paid"]
+related: ["is-masculinity-in-crisis", "rule-of-law-breakdown"]
 ---
 
 Like many Americans, I remember exactly where I was on the morning of September 11, 2001. I was a high school student on the way to first-period biology when the course of my life—and our nation’s history—changed forever. My family and I had been listening to NPR on the drive to school when we heard that a plane had struck one of the Twin Towers. By the time I sat down in class, the television was on, and like so many Americans, I watched live as the second tower was hit. In that moment, innocence gave way to resolve.

@@ -39,3 +39,14 @@ and first real essays remain operator steps.
 and publish tooling. React DS remains archived.
 
 **Rationale:** Complete the monorepo product surface without CMS or React dual stack.
+
+
+---
+
+## 2026-08-10 — Second upgrade wave (product + deferred items)
+
+**Decision:** Ship reading UX (time, progress, related, print), Pagefind search,
+author pages, cache headers, Substack frame embeds, Decap CMS admin shell,
+@pub/site-ui re-exports, Zod 4 for root tests, weekly substack-drift workflow,
+ship script. Full CMS backend auth still requires OAuth config. Paywalled 9/11
+full text remains teaser until Thomas supplies body.

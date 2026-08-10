@@ -113,7 +113,8 @@ test('site security policy and Claude workflows remain hardened', async () => {
   const sites = ['adversarial-system', 'just-asking-questions'];
   for (const site of sites) {
     const vercel = JSON.parse(await fs.readFile(new URL(`sites/${site}/vercel.json`, repoRoot), 'utf8'));
-    const csp = vercel.headers[0].headers.find((header) => header.key === 'Content-Security-Policy')?.value;
+    const siteHeaders = vercel.headers.find((h) => h.source === '/(.*)')?.headers || [];
+    const csp = siteHeaders.find((header) => header.key === 'Content-Security-Policy')?.value;
     assert.match(csp, /script-src 'self'/);
     assert.match(csp, /object-src 'none'/);
     assert.match(csp, /frame-ancestors 'none'/);

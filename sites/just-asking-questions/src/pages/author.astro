@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import { siteConfig } from '../site.config.js';
+import { personJsonLd } from '@pub/site-kit';
+
+const site = Astro.site || new URL(import.meta.env.PUBLIC_SITE_URL || siteConfig.siteUrl);
+const sameAs = [
+  siteConfig.substackUrl,
+  'https://thejacksonfirm.com',
+].filter(Boolean);
+const jsonLd = personJsonLd({
+  name: siteConfig.author,
+  url: new URL('/author/', site).toString(),
+  jobTitle: 'Trial attorney',
+  sameAs,
+});
+---
+<Base title={`Author · ${siteConfig.name}`} description={siteConfig.boilerplate} jsonLd={jsonLd}>
+  <span class="kicker">Author</span>
+  <h1>{siteConfig.author}</h1>
+  <p class="dek">{siteConfig.boilerplate}</p>
+  <p>
+    Trial attorney (Texas), USAF veteran, and writer. The designed essays live on this site;
+    email distribution runs on <a href={siteConfig.substackUrl}>Substack</a>.
+  </p>
+  <ul class="links">
+    <li><a href={siteConfig.substackUrl}>Substack</a></li>
+    <li><a href="https://thejacksonfirm.com">Jackson Law Firm</a></li>
+    <li><a href="/">Essays</a></li>
+  </ul>
+</Base>
+
+<style>
+  .dek { font-style: italic; font-size: 19px; color: var(--muted); max-width: 40ch; }
+  p { max-width: 40ch; }
+  .links { list-style: none; padding: 0; margin-top: 2rem; font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+  .links li { margin: 0.6rem 0; }
+</style>

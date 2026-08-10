@@ -23,13 +23,15 @@
     "new-essay": "node scripts/new-essay.mjs",
     "publish:check": "node scripts/publish-check.mjs",
     "set-substack-url": "node scripts/set-substack-url.mjs",
+    "ship": "node scripts/ship.mjs",
+    "substack:drift": "node scripts/substack-drift.mjs",
     "sync:vercel": "node scripts/sync-vercel-config.mjs"
   },
   "devDependencies": {
     "gray-matter": "^4.0.3",
     "sharp": "^0.35.3",
     "turndown": "^7.2.4",
-    "zod": "^3.25.76"
+    "zod": "^4.4.3"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.62.3"

@@ -1,0 +1,32 @@
+# Decap CMS (git-based) — JAQ essays. Backend uses GitHub; set branch + repo.
+backend:
+  name: github
+  repo: thomasjustesq-dev/publishing
+  branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+
+media_folder: sites/just-asking-questions/public/essays
+public_folder: /essays
+
+collections:
+  - name: essays
+    label: Essays
+    folder: sites/just-asking-questions/src/content/essays
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: string }
+      - { label: Date, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false }
+      - { label: Draft, name: draft, widget: boolean, default: true }
+      - { label: Format, name: format, widget: select, options: [essay, podcast, video, teaser], default: essay }
+      - { label: Paywalled, name: paywalled, widget: boolean, default: false }
+      - { label: Hero, name: hero, widget: string, required: false }
+      - { label: Hero Alt, name: heroAlt, widget: string, required: false }
+      - { label: Substack URL, name: substackUrl, widget: string, required: false }
+      - { label: Tags, name: tags, widget: list, default: [] }
+      - { label: Related slugs, name: related, widget: list, default: [] }
+      - { label: Body, name: body, widget: markdown }

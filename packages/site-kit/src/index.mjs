@@ -1,4 +1,5 @@
-export { essayCollectionSchema, FORMAT_LABELS } from './essay-schema.mjs';
+export { essayCollectionSchema, FORMAT_LABELS, readingTimeMinutes } from './essay-schema.mjs';
+export { pickRelated } from './reading.mjs';
 export { CONTENT_SECURITY_POLICY } from './csp.mjs';
 export { createVercelConfig } from './vercel.mjs';
 export { isDraftVisible, essayFilter, publishedOnly } from './essays.mjs';

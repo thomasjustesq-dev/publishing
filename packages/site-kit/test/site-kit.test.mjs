@@ -60,9 +60,11 @@ test('articleJsonLd shapes Article markup', () => {
 test('CSP and vercel config are production-ready', () => {
   assert.match(CONTENT_SECURITY_POLICY, /font-src 'self'/);
   assert.doesNotMatch(CONTENT_SECURITY_POLICY, /fonts\.googleapis/);
+  assert.match(CONTENT_SECURITY_POLICY, /frame-src/);
   const vercel = createVercelConfig();
   assert.equal(vercel.installCommand, 'cd ../.. && npm ci');
   assert.equal(vercel.outputDirectory, 'dist');
+  assert.ok(vercel.headers.some((h) => h.source === '/_astro/(.*)'));
 });
 
 test('essay schema accepts format and paywall fields', () => {

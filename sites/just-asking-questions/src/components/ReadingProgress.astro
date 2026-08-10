@@ -1,0 +1,21 @@
+---
+// Thin reading progress bar for long essays.
+---
+<div class="reading-progress" id="reading-progress" hidden aria-hidden="true"></div>
+<script is:inline src="/reading-progress.js"></script>
+
+<style>
+  .reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background: var(--accent);
+    z-index: 100;
+    pointer-events: none;
+  }
+  @media print {
+    .reading-progress { display: none !important; }
+  }
+</style>
