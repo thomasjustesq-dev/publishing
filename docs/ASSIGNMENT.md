@@ -18,7 +18,7 @@ If every continuous slot is **empty**, agents may only:
 
 | Slot | Owner | Task ID | Claim on main? | Work PR | Notes |
 | --- | --- | --- | --- | --- | --- |
-| Continuous — Grok | Grok | cms/github-oauth | yes |  |  |
+| Continuous — Grok | Grok | cms/github-oauth | yes | #25 | Decap production OAuth |
 | Continuous — Codex | | | | | |
 | Continuous — Kimi | | | | | |
 | On-demand — Claude | | | | | |
