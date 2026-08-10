@@ -1,33 +1,33 @@
 ---
-// Base shell — implements the Adversarial System brand kit handoff (masthead, volume bar,
-// double-rule motif, light/dark toggle). Deferred: About/Standards/Docket/Press-Kit/404
-// as dedicated pages — see brand/tokens.json note.
+// Base shell — Adversarial System brand kit (masthead, volume bar, double-rule motif).
+import '../styles/fonts.css';
 import '../styles/tokens.css';
 import { serializeJsonLd } from '@pub/core';
+import { siteConfig } from '../site.config.js';
+
 const {
-  title = 'The Adversarial System',
+  title = siteConfig.name,
   description = '',
-  ogImage = '/social/og-card-1200x630.png',
+  ogImage = siteConfig.defaultOgImage,
   type = 'website',
   publishedTime = null,
   modifiedTime = null,
   jsonLd = null,
 } = Astro.props;
-const site = Astro.site || new URL(import.meta.env.PUBLIC_SITE_URL || 'https://theadversarialsystem.com');
+const site = Astro.site || new URL(import.meta.env.PUBLIC_SITE_URL || siteConfig.siteUrl);
 const canonical = new URL(Astro.url.pathname, site).toString();
 const absoluteOgImage = ogImage ? new URL(ogImage, site).toString() : null;
 const rssUrl = new URL('/rss.xml', site).toString();
-const fontsUrl = "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap";
 ---
 <!doctype html>
-<html lang="en" data-theme-storage-key="tas-theme">
+<html lang="en" data-theme-storage-key={siteConfig.themeStorageKey}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" type="application/rss+xml" title="The Adversarial System RSS" href={rssUrl} />
+    <link rel="alternate" type="application/rss+xml" title={`${siteConfig.name} RSS`} href={rssUrl} />
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
     <meta property="og:url" content={canonical} />
@@ -38,10 +38,7 @@ const fontsUrl = "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital
     <meta name="twitter:card" content="summary_large_image" />
     {absoluteOgImage && <meta name="twitter:image" content={absoluteOgImage} />}
     {jsonLd && <script type="application/ld+json" set:html={serializeJsonLd(jsonLd)} />}
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href={fontsUrl} />
+    <link rel="icon" href={siteConfig.favicon} type="image/svg+xml" />
     <script is:inline src="/theme-init.js"></script>
     {import.meta.env.PROD && <script is:inline defer src="/_vercel/insights/script.js"></script>}
   </head>
@@ -54,12 +51,14 @@ const fontsUrl = "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital
 
     <header class="masthead">
       <a href="/" class="wordmark-link">
-        <img src="/brand/wordmark-primary.png" alt="The Adversarial System" class="wordmark-img" width="960" height="400" decoding="async" />
+        <img src="/brand/wordmark-primary.png" alt={siteConfig.name} class="wordmark-img" width="960" height="400" decoding="async" />
       </a>
       <nav class="nav">
         <a href="/">Docket</a>
+        <a href="/about/">About</a>
+        <a href="/standards/">Standards</a>
         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="false" type="button">☾</button>
-        <a class="subscribe-btn" href="https://theadversarialsystem.substack.com/subscribe" target="_blank" rel="noopener">Subscribe</a>
+        <a class="subscribe-btn" href={siteConfig.subscribeUrl} target="_blank" rel="noopener">Subscribe</a>
       </nav>
     </header>
 
@@ -69,8 +68,8 @@ const fontsUrl = "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital
 
     <footer class="colophon">
       <div class="rule-double"></div>
-      <p class="tagline">Writing from the edge of AI, security, and liberty</p>
-      <p class="copyright">&copy; {new Date().getFullYear()} Thomas M. Just · <a href="https://theadversarialsystem.substack.com">Subscribe on Substack</a></p>
+      <p class="tagline">{siteConfig.tagline}</p>
+      <p class="copyright">&copy; {new Date().getFullYear()} {siteConfig.author} · <a href={siteConfig.substackUrl}>Subscribe on Substack</a></p>
     </footer>
 
     <script is:inline src="/theme-toggle.js"></script>

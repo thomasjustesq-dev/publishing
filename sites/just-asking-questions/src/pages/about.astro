@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import { siteConfig } from '../site.config.js';
+---
+<Base title={`About · ${siteConfig.name}`} description={siteConfig.boilerplate}>
+  <span class="kicker">About</span>
+  <h1>{siteConfig.name}</h1>
+  <p class="dek">{siteConfig.boilerplate}</p>
+  <p>
+    The designed essays live here. Email distribution runs on
+    <a href={siteConfig.substackUrl}>Substack</a>. When both exist for a piece, this site is the
+    canonical version.
+  </p>
+  <p>
+    Written by {siteConfig.author} — trial attorney (Texas), USAF veteran.
+  </p>
+</Base>
+
+<style>
+  .dek { font-style: italic; font-size: 19px; color: var(--muted); max-width: 40ch; }
+  p { max-width: 40ch; }
+</style>

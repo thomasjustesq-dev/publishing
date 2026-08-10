@@ -1,6 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
+import { articleJsonLd } from '@pub/site-kit';
+import { siteConfig } from '../../site.config.js';
 
 export async function getStaticPaths() {
   const essays = await getCollection('essays', ({ data }) => !data.draft);
@@ -9,34 +11,33 @@ export async function getStaticPaths() {
 
 const { essay } = Astro.props;
 const { Content } = await render(essay);
-const site = Astro.site || new URL(import.meta.env.PUBLIC_SITE_URL || 'https://theadversarialsystem.com');
+const site = Astro.site || new URL(import.meta.env.PUBLIC_SITE_URL || siteConfig.siteUrl);
 const essayUrl = new URL(`/essays/${essay.id}/`, site).toString();
-const articleJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: essay.data.title,
+const heroAbs = essay.data.hero ? new URL(essay.data.hero, site).toString() : undefined;
+const jsonLd = articleJsonLd({
+  title: essay.data.title,
   description: essay.data.description,
-  datePublished: essay.data.date.toISOString(),
-  dateModified: (essay.data.updated || essay.data.date).toISOString(),
-  author: { '@type': 'Person', name: 'Thomas M. Just' },
-  mainEntityOfPage: essayUrl,
-  image: essay.data.hero ? new URL(essay.data.hero, site).toString() : undefined,
-};
+  date: essay.data.date,
+  updated: essay.data.updated,
+  url: essayUrl,
+  hero: heroAbs,
+  author: siteConfig.author,
+});
 ---
 <Base
   title={essay.data.title}
   description={essay.data.description}
-  ogImage={essay.data.hero || '/social/og-card-1200x630.png'}
+  ogImage={essay.data.hero || siteConfig.defaultOgImage}
   type="article"
   publishedTime={essay.data.date.toISOString()}
   modifiedTime={(essay.data.updated || essay.data.date).toISOString()}
-  jsonLd={articleJsonLd}
+  jsonLd={jsonLd}
 >
   <article class="essay">
     <span class="kicker">Essay</span>
     <h1>{essay.data.title}</h1>
     {essay.data.description && <p class="dek">{essay.data.description}</p>}
-    <p class="byline">Thomas M. Just · {essay.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+    <p class="byline">{siteConfig.author} · {essay.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
 
     {essay.data.hero && <img class="cover-plate" src={essay.data.hero} alt="" decoding="async" />}
 

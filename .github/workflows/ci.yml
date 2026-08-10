@@ -32,19 +32,12 @@ jobs:
       - name: Check content and unit tests
         run: npm run check
 
-      - name: Build packages and sites
+      - name: Build sites
         run: npm run build
 
-      - name: Verify design-system package artifacts
+      - name: Verify Vercel configs stay in sync with site-kit
         shell: bash
         run: |
           set -euo pipefail
-          for pkg in packages/ds-adversarial-system packages/ds-just-asking-questions; do
-            test -f "$pkg/dist/index.es.js"
-            test -f "$pkg/dist/index.d.ts"
-            test -f "$pkg/dist/index.css"
-            (cd "$pkg" && npm pack --dry-run > /tmp/$(basename "$pkg")-pack.log 2>&1)
-            grep -q 'dist/index.es.js' "/tmp/$(basename "$pkg")-pack.log"
-            grep -q 'dist/index.d.ts' "/tmp/$(basename "$pkg")-pack.log"
-            grep -q 'dist/index.css' "/tmp/$(basename "$pkg")-pack.log"
-          done
+          node scripts/sync-vercel-config.mjs
+          git diff --exit-code -- sites/*/vercel.json

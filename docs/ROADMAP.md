@@ -13,6 +13,9 @@
 | Item | Status | Notes |
 | --- | --- | --- |
 | Multi-agent coordination package | **Done** | Landed 2026-08-04 |
+| Monorepo finish (Astro-first, site-kit, parity, fonts) | **Done** | Landed 2026-08-10 |
+| Vercel domains + env cutover | **Next** | Operator / Thomas |
+| First published essays | **Next** | Content, not scaffolding |
 | Next product work | **Next** | Thomas assigns Task ID |
 
 ## Related

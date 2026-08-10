@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import { siteConfig } from '../site.config.js';
+---
+<Base title={`About · ${siteConfig.name}`} description={siteConfig.boilerplate}>
+  <span class="kicker">About</span>
+  <h1>{siteConfig.name}</h1>
+  <p class="dek">{siteConfig.boilerplate}</p>
+  <p>
+    The docket on this site is the designed home of each essay. The
+    <a href={siteConfig.substackUrl}>Substack</a> is the distribution channel. When both exist,
+    this site is canonical.
+  </p>
+  <p>Written by {siteConfig.author}.</p>
+</Base>
+
+<style>
+  .dek { font-style: italic; font-size: 19px; color: var(--body2); max-width: 44ch; }
+  p { max-width: 44ch; }
+</style>

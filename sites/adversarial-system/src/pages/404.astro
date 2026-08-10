@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import { siteConfig } from '../site.config.js';
+---
+<Base title={`Not found · ${siteConfig.name}`} description="That page does not exist.">
+  <span class="kicker">404</span>
+  <h1>Not on the docket.</h1>
+  <p class="dek">That page is not filed here.</p>
+  <p><a href="/">Return to the docket</a></p>
+</Base>
+
+<style>
+  .dek { font-style: italic; font-size: 19px; color: var(--body2); }
+</style>

@@ -1,5 +1,12 @@
 node_modules/
 dist/
 .env
+.env.*
+!.env.example
 .astro/
+.vercel
 *.substack.html
+.DS_Store
+**/.DS_Store
+*.log
+.npm

@@ -2,14 +2,15 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { fetchSubstackPosts } from '../lib/substack.js';
+import { siteConfig } from '../site.config.js';
 
 const essays = (await getCollection('essays', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const substackPosts = await fetchSubstackPosts(import.meta.env.SUBSTACK_FEED_URL || process.env.SUBSTACK_FEED_URL);
+const substackPosts = await fetchSubstackPosts();
 ---
-<Base title="Just Asking Questions" description="Long-form essays by Thomas M. Just.">
-  <h1>Just Asking Questions</h1>
-  <p class="dek">Essays by Thomas M. Just — trial attorney, USAF veteran.</p>
+<Base title={siteConfig.name} description={siteConfig.description}>
+  <h1>{siteConfig.name}</h1>
+  <p class="dek">Essays by {siteConfig.author} — trial attorney, USAF veteran.</p>
 
   <hr />
 

@@ -1,33 +1,33 @@
 ---
-// Base shell — implements the Just Asking Questions brand kit handoff: percontation-point
-// mark, EB Garamond/Newsreader/IBM Plex Mono, oxblood accent, light/dark toggle.
-// Deferred: dedicated site screens beyond home/essay — see brand/tokens.json note.
+// Base shell — Just Asking Questions brand kit (percontation mark, EB Garamond/Newsreader/IBM Plex Mono).
+import '../styles/fonts.css';
 import '../styles/tokens.css';
 import { serializeJsonLd } from '@pub/core';
+import { siteConfig } from '../site.config.js';
+
 const {
-  title = 'Just Asking Questions',
+  title = siteConfig.name,
   description = '',
-  ogImage = '/brand/etching-diogenes.png',
+  ogImage = siteConfig.defaultOgImage,
   type = 'website',
   publishedTime = null,
   modifiedTime = null,
   jsonLd = null,
 } = Astro.props;
-const site = Astro.site || new URL(import.meta.env.PUBLIC_SITE_URL || 'https://just-asking-questions.com');
+const site = Astro.site || new URL(import.meta.env.PUBLIC_SITE_URL || siteConfig.siteUrl);
 const canonical = new URL(Astro.url.pathname, site).toString();
 const absoluteOgImage = ogImage ? new URL(ogImage, site).toString() : null;
 const rssUrl = new URL('/rss.xml', site).toString();
-const fontsUrl = "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap";
 ---
 <!doctype html>
-<html lang="en" data-theme-storage-key="jaq-theme">
+<html lang="en" data-theme-storage-key={siteConfig.themeStorageKey}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" type="application/rss+xml" title="Just Asking Questions RSS" href={rssUrl} />
+    <link rel="alternate" type="application/rss+xml" title={`${siteConfig.name} RSS`} href={rssUrl} />
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
     <meta property="og:url" content={canonical} />
@@ -38,9 +38,7 @@ const fontsUrl = "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght
     <meta name="twitter:card" content="summary_large_image" />
     {absoluteOgImage && <meta name="twitter:image" content={absoluteOgImage} />}
     {jsonLd && <script type="application/ld+json" set:html={serializeJsonLd(jsonLd)} />}
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href={fontsUrl} />
+    <link rel="icon" href={siteConfig.favicon} type="image/svg+xml" />
     <script is:inline src="/theme-init.js"></script>
     {import.meta.env.PROD && <script is:inline defer src="/_vercel/insights/script.js"></script>}
   </head>
@@ -48,11 +46,12 @@ const fontsUrl = "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght
     <header class="masthead">
       <a href="/" class="lockup">
         <span class="mark-ring"><span class="mark-glyph">?</span></span>
-        <span class="wordmark">Just Asking Questions</span>
+        <span class="wordmark">{siteConfig.name}</span>
       </a>
       <nav class="nav">
+        <a href="/about/">About</a>
         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="false" type="button">☾</button>
-        <a class="subscribe-btn" href="https://thomasjustaskingquestions.substack.com/subscribe" target="_blank" rel="noopener">Subscribe</a>
+        <a class="subscribe-btn" href={siteConfig.subscribeUrl} target="_blank" rel="noopener">Subscribe</a>
       </nav>
     </header>
 
@@ -62,8 +61,8 @@ const fontsUrl = "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght
 
     <footer class="colophon">
       <span class="mark-bare">?</span>
-      <p class="byline">THOMAS M. JUST · NO VERDICTS WITHHELD</p>
-      <p class="copyright">&copy; {new Date().getFullYear()} · <a href="https://thomasjustaskingquestions.substack.com">Subscribe on Substack</a></p>
+      <p class="byline">{siteConfig.byline}</p>
+      <p class="copyright">&copy; {new Date().getFullYear()} · <a href={siteConfig.substackUrl}>Subscribe on Substack</a></p>
     </footer>
 
     <script is:inline src="/theme-toggle.js"></script>
@@ -122,7 +121,8 @@ const fontsUrl = "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght
   }
   .mark-glyph { display: inline-block; transform: scaleX(-1); font-family: var(--font-display); font-weight: 500; color: var(--accent); font-size: 22px; }
   .wordmark { font-family: var(--font-display); font-weight: 500; font-size: 22px; }
-  .nav { display: flex; align-items: center; gap: 1.25rem; }
+  .nav { display: flex; align-items: center; gap: 1.25rem; font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+  .nav a { color: var(--ink); border-bottom: none; }
   .theme-toggle {
     font-family: var(--font-mono); border: 1px solid var(--hairline-strong); background: transparent;
     color: var(--ink); width: 30px; height: 30px; cursor: pointer; border-radius: 0;
@@ -130,7 +130,7 @@ const fontsUrl = "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght
   .subscribe-btn {
     font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
     background: var(--accent); color: var(--background) !important; padding: 8px 16px;
-    border: 1px solid var(--accent);
+    border: 1px solid var(--accent); border-bottom: none !important;
   }
   .subscribe-btn:hover { background: transparent; color: var(--accent) !important; }
 

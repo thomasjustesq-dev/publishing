@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { siteConfig } from '../site.config.js';
+---
+<Base title={`Standards · ${siteConfig.name}`} description="Editorial standards for The Adversarial System.">
+  <span class="kicker">Standards</span>
+  <h1>Standards</h1>
+  <p class="dek">How this publication treats claims, sources, and corrections.</p>
+  <ul>
+    <li><strong>Argue in the open.</strong> Contested claims get sources or they get marked as opinion.</li>
+    <li><strong>Separate fact from judgment.</strong> Analysis is not hidden behind neutral phrasing.</li>
+    <li><strong>Correct promptly.</strong> Material errors are fixed on the canonical essay with a dated note when the change is substantive.</li>
+    <li><strong>Canonical home.</strong> The designed essay on this site is authoritative over the Substack paste when they diverge.</li>
+  </ul>
+</Base>
+
+<style>
+  .dek { font-style: italic; font-size: 19px; color: var(--body2); max-width: 44ch; }
+  ul { max-width: 48ch; padding-left: 1.25rem; }
+  li { margin: 0.85rem 0; }
+</style>
