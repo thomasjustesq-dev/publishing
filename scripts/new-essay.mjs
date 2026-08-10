@@ -53,6 +53,9 @@ title: ${JSON.stringify(title)}
 description: ""
 date: ${today}
 draft: ${draft}
+format: "essay"
+paywalled: false
+imported: false
 tags: []
 ---
 

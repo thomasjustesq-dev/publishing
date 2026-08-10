@@ -1,0 +1,38 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { siteConfig } from '../../site.config.js';
+import { publishedOnly } from '../../lib/essays.js';
+
+export async function getStaticPaths() {
+  const essays = await getCollection('essays', publishedOnly);
+  const tags = new Set();
+  for (const e of essays) for (const t of e.data.tags || []) tags.add(t);
+  return [...tags].map((tag) => ({ params: { tag } }));
+}
+
+const { tag } = Astro.params;
+const essays = (await getCollection('essays', publishedOnly))
+  .filter((e) => (e.data.tags || []).includes(tag))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<Base title={`${tag} · ${siteConfig.name}`} description={`Essays tagged ${tag}.`}>
+  <span class="kicker"><a href="/tags/">Tags</a></span>
+  <h1>{tag}</h1>
+  <ul class="essay-list">
+    {essays.map((e) => (
+      <li>
+        <a href={`/essays/${e.id}/`}>{e.data.title}</a>
+        <small class="date"> — {e.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</small>
+      </li>
+    ))}
+  </ul>
+</Base>
+
+<style>
+  .essay-list { list-style: none; padding: 0; }
+  .essay-list li { padding: 1rem 0; border-bottom: 1px solid var(--hairline); }
+  .essay-list a { font-family: var(--font-display); font-size: 24px; font-weight: 500; }
+  .date { font-family: var(--font-mono); font-size: 12px; color: var(--faint); }
+  .kicker a { color: inherit; }
+</style>

@@ -1,11 +1,18 @@
 ---
 import Base from '../../layouts/Base.astro';
+import EssayHeader from '../../components/EssayHeader.astro';
+import EssayHero from '../../components/EssayHero.astro';
+import EssayPaywallNote from '../../components/EssayPaywallNote.astro';
+import EssayMedia from '../../components/EssayMedia.astro';
+import EssayFooter from '../../components/EssayFooter.astro';
+import DropCapBody from '../../components/DropCapBody.astro';
 import { getCollection, render } from 'astro:content';
 import { articleJsonLd } from '@pub/site-kit';
 import { siteConfig } from '../../site.config.js';
+import { essayFilter } from '../../lib/essays.js';
 
 export async function getStaticPaths() {
-  const essays = await getCollection('essays', ({ data }) => !data.draft);
+  const essays = await getCollection('essays', essayFilter);
   return essays.map((essay) => ({ params: { slug: essay.id }, props: { essay } }));
 }
 
@@ -13,6 +20,8 @@ const { essay } = Astro.props;
 const { Content } = await render(essay);
 const site = Astro.site || new URL(import.meta.env.PUBLIC_SITE_URL || siteConfig.siteUrl);
 const essayUrl = new URL(`/essays/${essay.id}/`, site).toString();
+const format = essay.data.format || 'essay';
+const ogCandidate = essay.data.hero?.replace(/cover\.webp$/, 'og.webp');
 const heroAbs = essay.data.hero ? new URL(essay.data.hero, site).toString() : undefined;
 const jsonLd = articleJsonLd({
   title: essay.data.title,
@@ -23,42 +32,42 @@ const jsonLd = articleJsonLd({
   hero: heroAbs,
   author: siteConfig.author,
 });
+const dropCap = format === 'essay' && !essay.data.paywalled;
 ---
 <Base
   title={essay.data.title}
   description={essay.data.description}
-  ogImage={essay.data.hero || siteConfig.defaultOgImage}
+  ogImage={ogCandidate || essay.data.hero || siteConfig.defaultOgImage}
   type="article"
   publishedTime={essay.data.date.toISOString()}
   modifiedTime={(essay.data.updated || essay.data.date).toISOString()}
   jsonLd={jsonLd}
 >
   <article class="essay">
-    <span class="kicker">Essay</span>
-    <h1>{essay.data.title}</h1>
-    {essay.data.description && <p class="dek">{essay.data.description}</p>}
-    <p class="byline">{siteConfig.author} · {essay.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+    <EssayHeader
+      title={essay.data.title}
+      description={essay.data.description}
+      date={essay.data.date}
+      format={format}
+    />
 
-    {essay.data.hero && <img class="cover-plate" src={essay.data.hero} alt="" decoding="async" />}
-
-    <div class="essay-body">
-      <Content />
-    </div>
-
-    {essay.data.substackUrl && (
-      <p class="discuss"><a href={essay.data.substackUrl}>Discuss this essay on Substack →</a></p>
+    {(essay.data.paywalled || format === 'teaser') && (
+      <EssayPaywallNote substackUrl={essay.data.substackUrl} />
     )}
+
+    <EssayMedia
+      format={format}
+      audioUrl={essay.data.audioUrl}
+      videoUrl={essay.data.videoUrl}
+      substackUrl={essay.data.substackUrl}
+    />
+
+    <EssayHero src={essay.data.hero} alt={essay.data.heroAlt || ''} />
+
+    <DropCapBody enabled={dropCap}>
+      <Content />
+    </DropCapBody>
+
+    <EssayFooter tags={essay.data.tags} series={essay.data.series} substackUrl={essay.data.substackUrl} />
   </article>
 </Base>
-
-<style>
-  .dek { font-style: italic; font-size: 19px; color: var(--body2); max-width: 44ch; }
-  .byline { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); margin-top: 1rem; }
-  .cover-plate { border: 1px solid var(--line); margin: 2rem 0; }
-  .essay-body { font-size: 18px; line-height: 1.75; }
-  .essay-body > p:first-of-type::first-letter {
-    float: left; font-family: var(--font-display); font-size: 52px; line-height: .72;
-    color: var(--accent); padding: 8px 9px 0 0;
-  }
-  .discuss { margin-top: 3rem; font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
-</style>

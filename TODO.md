@@ -2,23 +2,23 @@
 
 **Reviewed:** 2026-08-10
 
-## Done in-repo (2026-08-10)
+## Done (upgrade wave)
 
-- Single lockfile monorepo; site locks removed; Vercel install from root
-- React DS packages archived to `design/archives/` (Astro-first)
-- `@pub/site-kit` shared schema / CSP / vercel / JSON-LD helpers
-- Site parity: About, 404, Standards (TAS), favicon (JAQ), fixed ports, self-hosted fonts
-- `new-essay` + `sync:vercel` scripts
+- Image optimize pipeline (sharp/WebP) + hero budgets
+- Essay schema: format, media, paywall, import flags
+- Astro essay components + tags + JSON-LD + draft preview
+- publish:check, set-substack-url, safer import flags
+- TAS intentional empty docket
 
-## Outside the repo (Thomas)
+## Operator (Thomas)
 
-- [ ] Confirm Vercel Production domains for both projects
-- [ ] Point `justaskingquestion.com` → JAQ redirect
-- [ ] Set `PUBLIC_SITE_URL` + `SUBSTACK_FEED_URL` on each Vercel project
-- [ ] Ship first real published essays (not scaffold drafts)
+- [ ] Vercel Preview: set `PUBLIC_SHOW_DRAFTS=1` on both projects (CLI was interactive)
+- [ ] Confirm Preview vs Production env separation
+- [ ] Paste full text for paywalled 9/11 essay when ready
+- [ ] First TAS Substack post → `npm run import:substack -- --site tas`
 
 ## Optional later
 
-- Dedicated 1200×630 OG art for JAQ
-- Per-essay OG/quote-card generation from tokens
-- Press kit / deck pages
+- Lighthouse CI hard gate
+- Footnote polish on re-import
+- Series routes when used

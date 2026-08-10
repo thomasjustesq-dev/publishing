@@ -4,6 +4,10 @@ description: "How the call to serve on September 11 shaped my path from Air Forc
 date: 2025-09-11
 substackUrl: "https://thomasjustaskingquestions.substack.com/p/from-911-to-the-bench-a-journey-of"
 draft: false
+format: "teaser"
+paywalled: true
+imported: true
+importSource: "https://thomasjustaskingquestions.substack.com/p/from-911-to-the-bench-a-journey-of"
 tags: ["substack-paid"]
 ---
 

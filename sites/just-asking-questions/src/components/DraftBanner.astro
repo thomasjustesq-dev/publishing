@@ -1,0 +1,20 @@
+---
+import { showDrafts } from '../lib/essays.js';
+const visible = showDrafts();
+---
+{visible && (
+  <div class="draft-banner" role="status">Draft preview — not production.</div>
+)}
+
+<style>
+  .draft-banner {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    background: var(--accent);
+    color: var(--background);
+  }
+</style>

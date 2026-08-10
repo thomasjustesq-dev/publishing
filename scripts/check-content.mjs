@@ -4,9 +4,10 @@
 //   node scripts/check-content.mjs
 //   REQUIRE_PUBLISHED_ESSAYS=1 node scripts/check-content.mjs
 
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import matter from 'gray-matter';
+import { ERROR_HERO_BYTES, WARN_HERO_BYTES } from './lib/optimize-image.mjs';
 
 const root = process.cwd();
 const sitesDir = join(root, 'sites');
@@ -70,10 +71,18 @@ for (const site of siteNames) {
       }
     }
 
-    for (const field of ['canonical', 'substackUrl']) {
+    for (const field of ['canonical', 'substackUrl', 'audioUrl', 'videoUrl', 'importSource']) {
       if (data[field] !== undefined && !isUrl(data[field])) {
         errors.push(`${label}: ${field} must be a valid URL`);
       }
+    }
+
+    const format = data.format || 'essay';
+    if (data.format !== undefined && !['essay', 'podcast', 'video', 'teaser'].includes(data.format)) {
+      errors.push(`${label}: format must be essay|podcast|video|teaser`);
+    }
+    if ((format === 'teaser' || data.paywalled === true) && !isDraft && !data.substackUrl) {
+      errors.push(`${label}: teaser/paywalled essays require substackUrl`);
     }
 
     if (data.hero !== undefined) {
@@ -81,7 +90,20 @@ for (const site of siteNames) {
         errors.push(`${label}: hero must be a non-empty string when present`);
       } else if (data.hero.startsWith('/')) {
         const heroPath = join(sitesDir, site, 'public', data.hero.slice(1));
-        if (!existsSync(heroPath)) errors.push(`${label}: hero image not found at public${data.hero}`);
+        if (!existsSync(heroPath)) {
+          errors.push(`${label}: hero image not found at public${data.hero}`);
+        } else {
+          const size = statSync(heroPath).size;
+          if (size > ERROR_HERO_BYTES) {
+            errors.push(
+              `${label}: hero ${data.hero} is ${(size / 1024).toFixed(0)} KB (max ${(ERROR_HERO_BYTES / 1024).toFixed(0)} KB) — run npm run optimize:images`,
+            );
+          } else if (size > WARN_HERO_BYTES) {
+            warnings.push(
+              `${label}: hero ${data.hero} is ${(size / 1024).toFixed(0)} KB (prefer ≤ ${(WARN_HERO_BYTES / 1024).toFixed(0)} KB)`,
+            );
+          }
+        }
       } else if (!/^https?:\/\//i.test(data.hero)) {
         const heroPath = join(dirname(path), data.hero);
         if (!existsSync(heroPath)) errors.push(`${label}: hero image not found relative to essay (${data.hero})`);

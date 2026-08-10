@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { siteConfig } from '../../site.config.js';
+import { publishedOnly } from '../../lib/essays.js';
+
+const essays = await getCollection('essays', publishedOnly);
+const counts = new Map();
+for (const e of essays) {
+  for (const tag of e.data.tags || []) {
+    counts.set(tag, (counts.get(tag) || 0) + 1);
+  }
+}
+const tags = [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+---
+<Base title={`Tags · ${siteConfig.name}`} description="Browse essays by tag.">
+  <span class="kicker">Index</span>
+  <h1>Tags</h1>
+  {tags.length === 0 && <p>No tags yet.</p>}
+  <ul class="tag-list">
+    {tags.map(([tag, n]) => (
+      <li><a href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a> <span class="count">{n}</span></li>
+    ))}
+  </ul>
+</Base>
+
+<style>
+  .tag-list { list-style: none; padding: 0; }
+  .tag-list li { padding: 0.75rem 0; border-bottom: 1px solid var(--hairline); font-family: var(--font-display); font-size: 22px; }
+  .count { font-family: var(--font-mono); font-size: 12px; color: var(--faint); margin-left: 0.5rem; }
+</style>

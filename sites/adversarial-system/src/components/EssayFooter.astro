@@ -1,0 +1,25 @@
+---
+const { tags = [], series, substackUrl } = Astro.props;
+---
+<footer class="essay-footer">
+  {tags.length > 0 && (
+    <p class="tags">
+      {tags.map((tag) => (
+        <a href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a>
+      ))}
+    </p>
+  )}
+  {series && <p class="series">Series: <a href={`/series/${encodeURIComponent(series)}/`}>{series}</a></p>}
+  {substackUrl && (
+    <p class="discuss"><a href={substackUrl} target="_blank" rel="noopener">Discuss this essay on Substack →</a></p>
+  )}
+</footer>
+
+<style>
+  .essay-footer { margin-top: 3rem; }
+  .tags { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+  .tags a { margin-right: 1rem; color: var(--muted); }
+  .tags a:hover { color: var(--accent); }
+  .series { font-family: var(--font-mono); font-size: 12px; color: var(--body2); }
+  .discuss { margin-top: 1.5rem; font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+</style>

@@ -4,8 +4,12 @@ description: "My name is Thomas Just, and I am just asking questions."
 date: 2025-01-22
 substackUrl: "https://thomasjustaskingquestions.substack.com/p/is-masculinity-in-crisis"
 draft: false
+format: "essay"
+imported: true
+importSource: "https://thomasjustaskingquestions.substack.com/p/is-masculinity-in-crisis"
+hero: "/essays/is-masculinity-in-crisis/cover.webp"
+heroAlt: "Cover image for Is Masculinity in Crisis?"
 tags: []
-hero: "/essays/is-masculinity-in-crisis/cover.jpeg"
 ---
 
 My name is Thomas Just, and I am just asking questions.

@@ -77,7 +77,29 @@ PUBLIC_SITE_URL=https://your-domain.com
      --site-url https://just-asking-questions.com --stdout
    ```
 
-5. After the Substack post is live, set `substackUrl` on the essay frontmatter and re-check.
+5. After the Substack post is live:
+
+```sh
+npm run set-substack-url -- --site jaq --slug my-essay --url https://…substack.com/p/…
+```
+
+6. Full gate before push:
+
+```sh
+npm run publish:check
+```
+
+Drafts: visible in local `dev` and when `PUBLIC_SHOW_DRAFTS=1` (Vercel Preview only — never Production). RSS is always published-only.
+
+Deploy: **git push to main** (Vercel Root Directory `sites/<name>`). Do not `vercel --prod` from a site subdirectory.
+
+### Images
+
+```sh
+npm run optimize:images -- --site jaq   # re-compress public/essays heroes to WebP
+```
+
+Heroes over 1.5 MB fail `npm run check`. Import auto-optimizes downloads.
 
 ### Import existing Substack posts
 
@@ -120,3 +142,20 @@ as CSS custom properties. Fonts are self-hosted (`src/styles/fonts.css` + `@font
 
 Live workspace packages use the `@pub/*` scope (`@pub/core`, `@pub/site-kit`). Publication
 sites keep short unscoped names (`just-asking-questions`, `adversarial-system`).
+
+
+## Essay frontmatter
+
+| Field | Required | Notes |
+| --- | --- | --- |
+| `title` | yes | |
+| `description` | published | |
+| `date` | yes | not future |
+| `draft` | no | default false |
+| `format` | no | `essay` \| `podcast` \| `video` \| `teaser` |
+| `paywalled` | no | teaser requires `substackUrl` |
+| `hero` / `heroAlt` | no | public path; size-budgeted |
+| `substackUrl` | no | after Substack publish |
+| `tags` | no | powers `/tags/` |
+| `audioUrl` / `videoUrl` | no | external link-outs |
+| `imported` / `importSource` | no | Substack import metadata |

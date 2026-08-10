@@ -13,9 +13,25 @@ export function essayCollectionSchema(z) {
     }),
     updated: z.coerce.date().optional(),
     hero: z.string().optional(),
+    heroAlt: z.string().optional(),
+    format: z.enum(['essay', 'podcast', 'video', 'teaser']).default('essay'),
+    audioUrl: z.string().url().optional(),
+    videoUrl: z.string().url().optional(),
+    series: z.string().optional(),
+    imported: z.boolean().default(false),
+    importSource: z.string().url().optional(),
+    paywalled: z.boolean().default(false),
     canonical: z.string().url().optional(),
     substackUrl: z.string().url().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
   });
 }
+
+/** Format labels for UI kickers */
+export const FORMAT_LABELS = {
+  essay: 'Essay',
+  podcast: 'Podcast',
+  video: 'Video',
+  teaser: 'Subscriber preview',
+};

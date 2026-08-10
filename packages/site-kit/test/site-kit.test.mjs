@@ -1,7 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { z } from 'zod';
-import { articleJsonLd, defineSiteConfig, essayCollectionSchema, CONTENT_SECURITY_POLICY, createVercelConfig } from '../src/index.mjs';
+import {
+  articleJsonLd,
+  defineSiteConfig,
+  essayCollectionSchema,
+  CONTENT_SECURITY_POLICY,
+  createVercelConfig,
+  websiteJsonLd,
+  personJsonLd,
+  publishedOnly,
+  essayFilter,
+} from '../src/index.mjs';
 
 test('essayCollectionSchema accepts a published essay shape', () => {
   const schema = essayCollectionSchema(z);
@@ -53,4 +63,35 @@ test('CSP and vercel config are production-ready', () => {
   const vercel = createVercelConfig();
   assert.equal(vercel.installCommand, 'cd ../.. && npm ci');
   assert.equal(vercel.outputDirectory, 'dist');
+});
+
+test('essay schema accepts format and paywall fields', () => {
+  const schema = essayCollectionSchema(z);
+  const parsed = schema.parse({
+    title: 'Teaser',
+    description: 'D',
+    date: '2026-01-01',
+    format: 'teaser',
+    paywalled: true,
+    substackUrl: 'https://example.substack.com/p/x',
+    imported: true,
+  });
+  assert.equal(parsed.format, 'teaser');
+  assert.equal(parsed.paywalled, true);
+});
+
+test('website and person JSON-LD shapes', () => {
+  const w = websiteJsonLd({ name: 'JAQ', url: 'https://example.com/', description: 'D' });
+  assert.equal(w['@type'], 'WebSite');
+  const p = personJsonLd({ url: 'https://example.com/about/', sameAs: ['https://x.com'] });
+  assert.equal(p['@type'], 'Person');
+  assert.deepEqual(p.sameAs, ['https://x.com']);
+});
+
+test('draft filters', () => {
+  assert.equal(publishedOnly({ data: { draft: true } }), false);
+  assert.equal(publishedOnly({ data: { draft: false } }), true);
+  assert.equal(essayFilter({ data: { draft: true } }, { DEV: true }), true);
+  assert.equal(essayFilter({ data: { draft: true } }, { PROD: true, PUBLIC_SHOW_DRAFTS: undefined }), false);
+  assert.equal(essayFilter({ data: { draft: true } }, { PROD: true, PUBLIC_SHOW_DRAFTS: '1' }), true);
 });

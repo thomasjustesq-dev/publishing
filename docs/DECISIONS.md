@@ -28,3 +28,14 @@ Three lockfiles and dual install models fought each other. Google Fonts complica
 
 **Scope:** product packages, both sites, CI, README/TODO. DNS/Vercel dashboard env
 and first real essays remain operator steps.
+
+---
+
+## 2026-08-10 — Full upgrade wave (images, schema, drafts, SEO)
+
+**Decision:** Ship image optimization (sharp/WebP), extended essay schema
+(format/media/paywall/import), Astro essay components, draft preview via
+`PUBLIC_SHOW_DRAFTS`, tags routes, WebSite/Person JSON-LD, www canonicals,
+and publish tooling. React DS remains archived.
+
+**Rationale:** Complete the monorepo product surface without CMS or React dual stack.

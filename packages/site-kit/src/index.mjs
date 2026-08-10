@@ -1,6 +1,7 @@
-export { essayCollectionSchema } from './essay-schema.mjs';
+export { essayCollectionSchema, FORMAT_LABELS } from './essay-schema.mjs';
 export { CONTENT_SECURITY_POLICY } from './csp.mjs';
 export { createVercelConfig } from './vercel.mjs';
+export { isDraftVisible, essayFilter, publishedOnly } from './essays.mjs';
 
 /**
  * Build a publication identity object. Sites pass brand-specific fields.
@@ -29,5 +30,32 @@ export function articleJsonLd({ title, description, date, updated, url, hero, au
     author: { '@type': 'Person', name: author },
     mainEntityOfPage: url,
     image: hero || undefined,
+  };
+}
+
+export function websiteJsonLd({ name, url, description, author = 'Thomas M. Just' }) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name,
+    url,
+    description,
+    author: { '@type': 'Person', name: author },
+  };
+}
+
+export function personJsonLd({
+  name = 'Thomas M. Just',
+  url,
+  jobTitle = 'Trial attorney',
+  sameAs = [],
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name,
+    url,
+    jobTitle,
+    sameAs: sameAs.filter(Boolean),
   };
 }

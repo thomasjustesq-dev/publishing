@@ -1,0 +1,18 @@
+---
+const { substackUrl } = Astro.props;
+---
+<aside class="paywall-note" role="note">
+  <p><strong>Subscriber preview.</strong> The full essay is on Substack for subscribers.</p>
+  {substackUrl && <p><a href={substackUrl} target="_blank" rel="noopener">Read the full essay on Substack →</a></p>}
+</aside>
+
+<style>
+  .paywall-note {
+    margin: 1.5rem 0 2rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    font-size: 16px;
+  }
+  .paywall-note a { color: var(--accent); border-bottom-color: rgba(122,46,42,.35); }
+</style>

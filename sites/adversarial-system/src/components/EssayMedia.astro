@@ -1,0 +1,21 @@
+---
+const { format, audioUrl, videoUrl, substackUrl } = Astro.props;
+const href = audioUrl || videoUrl || substackUrl;
+---
+{format === 'podcast' && href && (
+  <p class="media-cta"><a href={href} target="_blank" rel="noopener">Listen on Substack →</a></p>
+)}
+{format === 'video' && href && (
+  <p class="media-cta"><a href={href} target="_blank" rel="noopener">Watch on Substack →</a></p>
+)}
+
+<style>
+  .media-cta {
+    margin: 1.5rem 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+  .media-cta a { color: var(--accent); }
+</style>

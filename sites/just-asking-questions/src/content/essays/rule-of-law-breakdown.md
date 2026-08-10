@@ -4,8 +4,12 @@ description: "King v. Constitution"
 date: 2025-03-26
 substackUrl: "https://thomasjustaskingquestions.substack.com/p/rule-of-law-breakdown"
 draft: false
+format: "essay"
+imported: true
+importSource: "https://thomasjustaskingquestions.substack.com/p/rule-of-law-breakdown"
+hero: "/essays/rule-of-law-breakdown/cover.webp"
+heroAlt: "Cover image for Rule of Law Breakdown?"
 tags: []
-hero: "/essays/rule-of-law-breakdown/cover.jpeg"
 ---
 
 Coming out of law school, I approached becoming a lawyer in much the same way I approached becoming an Air Force intelligence analyst: I was going to serve something larger than myself and defend the Constitution and the rule of law itself. What I have found is a profession like any other where, for most people, the bottom line is the bottom line. I discovered and subsequently reported a firm owner who was knowingly employing and profiting from a woman who was practicing law without a license[\[1\]](#_ftn1),[\[2\]](#_ftn2) Both the firm owner and the woman practicing without a license got slaps on the wrist. I’ve had a firm owner tell me point blank that what it is all about for them is the money.

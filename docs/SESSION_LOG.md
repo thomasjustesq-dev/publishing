@@ -17,3 +17,9 @@ About/404/Standards; JAQ favicon; self-hosted fonts; ports 4321/4322; docs.
 - Installed scaled multi-agent coordination (claim-first, ASSIGNMENT, guard).
 - Product code unchanged.
 - Open questions: install `REPO_PAT` if auto-merge/reconcile desired.
+
+## 2026-08-10 (upgrade wave)
+
+Implemented plan Phases 1–9: sharp image pipeline + backfill; schema + components;
+draft filters; tags + JSON-LD + OG; publish:check / set-substack-url; TAS empty state;
+CI image check; docs.

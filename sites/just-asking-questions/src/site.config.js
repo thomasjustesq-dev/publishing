@@ -10,7 +10,7 @@ export const siteConfig = defineSiteConfig({
   byline: 'THOMAS M. JUST · NO VERDICTS WITHHELD',
   themeStorageKey: 'jaq-theme',
   substackHost: 'thomasjustaskingquestions.substack.com',
-  defaultOgImage: '/brand/etching-diogenes.png',
+  defaultOgImage: '/social/og-card-1200x630.webp',
   favicon: '/favicon.svg',
   boilerplate:
     'Just Asking Questions is a long-form essay publication by Thomas M. Just — trial attorney, USAF veteran.',

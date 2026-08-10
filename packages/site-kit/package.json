@@ -6,6 +6,7 @@
   "exports": {
     ".": "./src/index.mjs",
     "./essay-schema": "./src/essay-schema.mjs",
+    "./essays": "./src/essays.mjs",
     "./csp": "./src/csp.mjs",
     "./vercel": "./src/vercel.mjs"
   },

@@ -1,0 +1,14 @@
+---
+const { enabled = true } = Astro.props;
+---
+<div class:list={['essay-body', { 'has-drop-cap': enabled }]}>
+  <slot />
+</div>
+
+<style>
+  .essay-body { font-size: 19px; line-height: 1.78; }
+  .essay-body.has-drop-cap > :global(p:first-of-type::first-letter) {
+    float: left; font-family: var(--font-display); font-weight: 500; font-size: 52px; line-height: .72;
+    color: var(--accent); padding: 8px 9px 0 0;
+  }
+</style>

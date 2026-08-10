@@ -15,15 +15,19 @@
     "dev:tas": "npm run dev --workspace adversarial-system",
     "build": "npm run build:sites",
     "build:sites": "npm run build --workspace adversarial-system && npm run build --workspace just-asking-questions",
-    "check": "node scripts/check-content.mjs && node scripts/check-tokens.mjs && npm test",
+    "check": "node scripts/check-content.mjs && node scripts/check-tokens.mjs && node scripts/check-images.mjs && npm test",
     "test": "node --test packages/pub-core/test/*.test.mjs packages/site-kit/test/*.test.mjs",
     "export:substack": "node scripts/substack-export.mjs",
     "import:substack": "node scripts/import-substack.mjs",
+    "optimize:images": "node scripts/optimize-essay-images.mjs",
     "new-essay": "node scripts/new-essay.mjs",
+    "publish:check": "node scripts/publish-check.mjs",
+    "set-substack-url": "node scripts/set-substack-url.mjs",
     "sync:vercel": "node scripts/sync-vercel-config.mjs"
   },
   "devDependencies": {
     "gray-matter": "^4.0.3",
+    "sharp": "^0.34.5",
     "turndown": "^7.2.4",
     "zod": "^3.25.76"
   },

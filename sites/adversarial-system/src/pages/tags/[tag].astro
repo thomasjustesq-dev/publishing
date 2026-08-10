@@ -1,0 +1,41 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { siteConfig } from '../../site.config.js';
+import { publishedOnly } from '../../lib/essays.js';
+
+export async function getStaticPaths() {
+  const essays = await getCollection('essays', publishedOnly);
+  const tags = new Set();
+  for (const e of essays) for (const t of e.data.tags || []) tags.add(t);
+  return [...tags].map((tag) => ({ params: { tag } }));
+}
+
+const { tag } = Astro.params;
+const essays = (await getCollection('essays', publishedOnly))
+  .filter((e) => (e.data.tags || []).includes(tag))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<Base title={`${tag} · ${siteConfig.name}`} description={`Filings tagged ${tag}.`}>
+  <span class="kicker"><a href="/tags/">Tags</a></span>
+  <h1>{tag}</h1>
+  <ul class="docket-list">
+    {essays.map((e) => (
+      <li class="docket-row">
+        <a href={`/essays/${e.id}/`}>{e.data.title}</a>
+        <span class="docket-date">{e.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+      </li>
+    ))}
+  </ul>
+</Base>
+
+<style>
+  .docket-list { list-style: none; padding: 0; }
+  .docket-row {
+    display: flex; align-items: baseline; gap: 1rem; padding: 1rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .docket-row a { color: var(--ink); text-decoration: none; font-family: var(--font-display); font-size: 22px; }
+  .docket-date { margin-left: auto; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+  .kicker a { color: inherit; text-decoration: none; }
+</style>

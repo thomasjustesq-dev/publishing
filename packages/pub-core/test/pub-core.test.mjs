@@ -120,8 +120,11 @@ test('site security policy and Claude workflows remain hardened', async () => {
     assert.doesNotMatch(csp, /unsafe-inline|unsafe-eval/);
 
     const layout = await fs.readFile(new URL(`sites/${site}/src/layouts/Base.astro`, repoRoot), 'utf8');
-    assert.match(layout, /serializeJsonLd\(jsonLd\)/);
-    assert.doesNotMatch(layout, /JSON\.stringify\(jsonLd\)|<script is:inline>/);
+    assert.match(layout, /serializeJsonLd\((jsonLd|block)\)/);
+    assert.doesNotMatch(layout, /JSON\.stringify\(jsonLd\)/);
+    // Theme scripts must be external files (is:inline only for src= external scripts is ok; ban inline bodies)
+    assert.match(layout, /src="\/theme-init\.js"/);
+    assert.match(layout, /src="\/theme-toggle\.js"/);
 
     const astroConfig = await fs.readFile(new URL(`sites/${site}/astro.config.mjs`, repoRoot), 'utf8');
     assert.match(astroConfig, /inlineStylesheets:\s*'never'/);

@@ -14,11 +14,10 @@
  * - Skips "coming-soon" and empty bodies unless --include-stubs
  */
 
-import { createWriteStream, existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import { dirname, extname, join } from 'node:path';
-import { pipeline } from 'node:stream/promises';
-import { Readable } from 'node:stream';
+import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import TurndownService from 'turndown';
+import { optimizeBufferToWebp } from './lib/optimize-image.mjs';
 
 const args = process.argv.slice(2);
 const get = (flag) => {
@@ -31,6 +30,7 @@ const siteKey = get('--site');
 const onlySlug = get('--slug');
 const dryRun = has('--dry-run');
 const includeStubs = has('--include-stubs');
+const noOverwrite = has('--no-overwrite');
 
 const sites = {
   jaq: {
@@ -52,7 +52,7 @@ const sites = {
 };
 
 if (!siteKey || !sites[siteKey]) {
-  console.error('Usage: node scripts/import-substack.mjs --site jaq|tas [--slug <slug>] [--dry-run] [--include-stubs]');
+  console.error('Usage: node scripts/import-substack.mjs --site jaq|tas [--slug <slug>] [--dry-run] [--include-stubs] [--no-overwrite]');
   process.exit(1);
 }
 
@@ -97,22 +97,10 @@ function dateOnly(iso) {
   return new Date(iso).toISOString().slice(0, 10);
 }
 
-function extFromUrl(url, fallback = '.jpg') {
-  try {
-    const path = new URL(url).pathname;
-    const ext = extname(path).toLowerCase();
-    if (['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif'].includes(ext)) return ext;
-  } catch {
-    /* ignore */
-  }
-  return fallback;
-}
-
-async function download(url, dest) {
+async function downloadBuffer(url) {
   const res = await fetch(url, { redirect: 'follow' });
   if (!res.ok) throw new Error(`download failed ${res.status} ${url}`);
-  mkdirSync(dirname(dest), { recursive: true });
-  await pipeline(Readable.fromWeb(res.body), createWriteStream(dest));
+  return Buffer.from(await res.arrayBuffer());
 }
 
 async function localizeImages(html, slug) {
@@ -128,13 +116,14 @@ async function localizeImages(html, slug) {
     if (!/^https?:\/\//i.test(url)) continue;
     if (url.includes('substack.com/app') || url.includes('install-substack')) continue;
     i += 1;
-    const ext = extFromUrl(url);
-    const filename = `img-${String(i).padStart(2, '0')}${ext}`;
+    const filename = `img-${String(i).padStart(2, '0')}.webp`;
     const dest = join(imgDir, filename);
     const publicPath = `/essays/${slug}/${filename}`;
     if (!dryRun) {
       try {
-        await download(url, dest);
+        mkdirSync(imgDir, { recursive: true });
+        const buf = await downloadBuffer(url);
+        await optimizeBufferToWebp(buf, dest);
       } catch (err) {
         console.warn(`  warn: image skip ${url} (${err.message})`);
         continue;
@@ -190,6 +179,16 @@ for (const entry of posts) {
     continue;
   }
 
+  const outPath = join(contentDir, `${slug}.md`);
+  if (noOverwrite && existsSync(outPath)) {
+    const existing = readFileSync(outPath, 'utf8');
+    if (/imported:\s*false/i.test(existing) || !/imported:\s*true/i.test(existing)) {
+      console.log(`skip ${slug} (exists; --no-overwrite and not imported:true)`);
+      skipped += 1;
+      continue;
+    }
+  }
+
   const post = await fetchPost(slug);
   const title = (post.title || entry.title || slug).trim();
   const description = (post.subtitle || post.description || entry.description || title).trim();
@@ -198,11 +197,19 @@ for (const entry of posts) {
   const audience = post.audience || entry.audience || 'everyone';
   const type = post.type || entry.type || 'newsletter';
   let bodyHtml = post.body_html || '';
+  let format = 'essay';
+  let paywalled = false;
+  let videoUrl;
+  let audioUrl;
 
+  if (type === 'podcast') format = 'podcast';
   if (isMostlyChrome(bodyHtml) && !includeStubs) {
     if (type === 'podcast') {
+      format = 'podcast';
       bodyHtml = `<p>Podcast episode. Listen on <a href="${substackUrl}">Substack</a>.</p>`;
     } else if (audience === 'only_paid') {
+      format = 'teaser';
+      paywalled = true;
       bodyHtml = `<p>${description}</p><p><em>This essay is currently paywalled on Substack. The designed site will carry the full text when a free or public version is available — read it for subscribers on <a href="${substackUrl}">Substack</a>.</em></p><p>${post.truncated_body_text || ''}</p>`;
     } else {
       console.log(`skip ${slug} (empty body)`);
@@ -210,8 +217,13 @@ for (const entry of posts) {
       continue;
     }
   } else if (audience === 'only_paid' && (post.body_html || '').length < 2000) {
-    // Partial body from API for paid posts — keep teaser, point to Substack for full text.
+    format = 'teaser';
+    paywalled = true;
     bodyHtml = `${bodyHtml}<p><em>Full essay available to subscribers on <a href="${substackUrl}">Substack</a>.</em></p>`;
+  }
+  // Heuristic: short body + cover often means video-native Substack post
+  if (format === 'essay' && bodyHtml.replace(/<[^>]+>/g, '').trim().length < 500 && post.cover_image) {
+    // leave essay unless content is clearly a video post with stub text
   }
 
   bodyHtml = await localizeImages(bodyHtml, slug);
@@ -220,13 +232,14 @@ for (const entry of posts) {
 
   let hero;
   if (post.cover_image) {
-    const ext = extFromUrl(post.cover_image, '.jpeg');
-    const heroFile = `cover${ext}`;
-    const heroDest = join(publicEssaysDir, slug, heroFile);
-    hero = `/essays/${slug}/${heroFile}`;
+    const heroDest = join(publicEssaysDir, slug, 'cover.webp');
+    const ogDest = join(publicEssaysDir, slug, 'og.webp');
+    hero = `/essays/${slug}/cover.webp`;
     if (!dryRun) {
       try {
-        await download(post.cover_image, heroDest);
+        mkdirSync(dirname(heroDest), { recursive: true });
+        const buf = await downloadBuffer(post.cover_image);
+        await optimizeBufferToWebp(buf, heroDest, { ogPath: ogDest });
       } catch (err) {
         console.warn(`  warn: cover skip ${slug} (${err.message})`);
         hero = undefined;
@@ -235,8 +248,9 @@ for (const entry of posts) {
   }
 
   const tags = [];
-  if (type === 'podcast') tags.push('podcast');
-  if (audience === 'only_paid') tags.push('substack-paid');
+  if (format === 'podcast') tags.push('podcast');
+  if (format === 'video') tags.push('video');
+  if (paywalled || audience === 'only_paid') tags.push('substack-paid');
 
   const frontmatter = [
     '---',
@@ -245,13 +259,21 @@ for (const entry of posts) {
     `date: ${dateOnly(date)}`,
     `substackUrl: ${yamlQuote(substackUrl)}`,
     `draft: false`,
+    `format: ${yamlQuote(format)}`,
+    `paywalled: ${paywalled}`,
+    `imported: true`,
+    `importSource: ${yamlQuote(substackUrl)}`,
     `tags: [${tags.map((t) => yamlQuote(t)).join(', ')}]`,
   ];
-  if (hero) frontmatter.push(`hero: ${yamlQuote(hero)}`);
+  if (hero) {
+    frontmatter.push(`hero: ${yamlQuote(hero)}`);
+    frontmatter.push(`heroAlt: ${yamlQuote(`Cover image for ${title}`)}`);
+  }
+  if (videoUrl) frontmatter.push(`videoUrl: ${yamlQuote(videoUrl)}`);
+  if (audioUrl) frontmatter.push(`audioUrl: ${yamlQuote(audioUrl)}`);
   frontmatter.push('---', '', markdown, '');
 
-  const outPath = join(contentDir, `${slug}.md`);
-  console.log(`${dryRun ? 'would write' : 'write'} ${outPath} (${markdown.length} chars, type=${type}, audience=${audience})`);
+  console.log(`${dryRun ? 'would write' : 'write'} ${outPath} (${markdown.length} chars, format=${format}, audience=${audience})`);
   if (!dryRun) writeFileSync(outPath, frontmatter.join('\n'));
   written += 1;
 }

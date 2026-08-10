@@ -4,8 +4,12 @@ description: "What is stoicism and why are people obsessed with it all of a sudd
 date: 2025-02-07
 substackUrl: "https://thomasjustaskingquestions.substack.com/p/the-stoicism-question"
 draft: false
+format: "essay"
+imported: true
+importSource: "https://thomasjustaskingquestions.substack.com/p/the-stoicism-question"
+hero: "/essays/the-stoicism-question/cover.webp"
+heroAlt: "Cover image for The Stoicism Question"
 tags: []
-hero: "/essays/the-stoicism-question/cover.jpeg"
 ---
 
 My name is Thomas M. Just and I am just asking questions.
@@ -68,7 +72,7 @@ https://store.dailystoic.com/
 
 [
 
-![](/essays/the-stoicism-question/img-01.png)Ataraxia or Bust!
+![](/essays/the-stoicism-question/img-01.webp)Ataraxia or Bust!
 
 The Stoicism Scam
 
