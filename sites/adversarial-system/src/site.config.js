@@ -4,7 +4,7 @@ export const siteConfig = defineSiteConfig({
   id: 'tas',
   name: 'The Adversarial System',
   description: 'Writing from the edge of AI, security, and liberty.',
-  siteUrl: 'https://theadversarialsystem.com',
+  siteUrl: 'https://www.theadversarialsystem.com',
   author: 'Thomas M. Just',
   tagline: 'Writing from the edge of AI, security, and liberty',
   byline: 'Thomas M. Just',

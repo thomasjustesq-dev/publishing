@@ -18,11 +18,13 @@
     "check": "node scripts/check-content.mjs && node scripts/check-tokens.mjs && npm test",
     "test": "node --test packages/pub-core/test/*.test.mjs packages/site-kit/test/*.test.mjs",
     "export:substack": "node scripts/substack-export.mjs",
+    "import:substack": "node scripts/import-substack.mjs",
     "new-essay": "node scripts/new-essay.mjs",
     "sync:vercel": "node scripts/sync-vercel-config.mjs"
   },
   "devDependencies": {
     "gray-matter": "^4.0.3",
+    "turndown": "^7.2.4",
     "zod": "^3.25.76"
   },
   "optionalDependencies": {

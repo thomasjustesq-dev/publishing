@@ -4,7 +4,7 @@ export const siteConfig = defineSiteConfig({
   id: 'jaq',
   name: 'Just Asking Questions',
   description: 'Long-form essays by Thomas M. Just.',
-  siteUrl: 'https://just-asking-questions.com',
+  siteUrl: 'https://www.just-asking-questions.com',
   author: 'Thomas M. Just',
   tagline: 'No verdicts withheld',
   byline: 'THOMAS M. JUST · NO VERDICTS WITHHELD',

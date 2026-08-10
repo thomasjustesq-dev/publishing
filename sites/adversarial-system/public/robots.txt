@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://theadversarialsystem.com/sitemap-index.xml
+Sitemap: https://www.theadversarialsystem.com/sitemap-index.xml

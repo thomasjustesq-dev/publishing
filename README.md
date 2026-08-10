@@ -79,6 +79,19 @@ PUBLIC_SITE_URL=https://your-domain.com
 
 5. After the Substack post is live, set `substackUrl` on the essay frontmatter and re-check.
 
+### Import existing Substack posts
+
+```sh
+npm run import:substack -- --site jaq
+npm run import:substack -- --site tas
+npm run import:substack -- --site jaq --slug the-stoicism-question
+```
+
+Pulls public post HTML from Substack’s API, converts to markdown, downloads covers/images
+into `public/essays/<slug>/`, and writes published essays with `substackUrl`. Skips
+`coming-soon`. Paid posts import the free teaser only. TAS is empty until that Substack
+has posts.
+
 Samples stay in `sites/<publication>/examples/` — not in the published collection.
 
 ## Deploy (Vercel)
