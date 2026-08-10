@@ -25,9 +25,12 @@
     "set-substack-url": "node scripts/set-substack-url.mjs",
     "ship": "node scripts/ship.mjs",
     "substack:drift": "node scripts/substack-drift.mjs",
-    "sync:vercel": "node scripts/sync-vercel-config.mjs"
+    "sync:vercel": "node scripts/sync-vercel-config.mjs",
+    "cms": "decap-server",
+    "cms:jaq": "echo \"Open http://localhost:4321/admin/ after: npm run cms & npm run dev:jaq\""
   },
   "devDependencies": {
+    "decap-server": "^3.10.0",
     "gray-matter": "^4.0.3",
     "sharp": "^0.35.3",
     "turndown": "^7.2.4",

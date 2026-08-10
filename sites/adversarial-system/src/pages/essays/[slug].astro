@@ -55,7 +55,7 @@ const preloadHero = essay.data.hero || null;
 >
   {format === 'essay' && !essay.data.paywalled && <ReadingProgress />}
 
-  <article class:list={['essay', { 'essay-media': isMedia }]}>
+  <article data-pagefind-body class:list={['essay', { 'essay-media': isMedia }]}>
     <EssayHeader
       title={essay.data.title}
       description={essay.data.description}

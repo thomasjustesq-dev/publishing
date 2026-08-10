@@ -1,4 +1,8 @@
-# Decap CMS (git-based) — TAS essays. Backend uses GitHub; set branch + repo.
+# Decap CMS — The Adversarial System essays
+# Local: npm run cms + npm run dev:tas → http://localhost:4322/admin/
+
+local_backend: true
+
 backend:
   name: github
   repo: thomasjustesq-dev/publishing
@@ -6,12 +10,13 @@ backend:
   base_url: https://api.netlify.com
   auth_endpoint: auth
 
-media_folder: sites/adversarial-system/public/essays
-public_folder: /essays
+media_folder: sites/adversarial-system/public/essays/_uploads
+public_folder: /essays/_uploads
 
 collections:
   - name: essays
-    label: Essays
+    label: Filings
+    label_singular: Filing
     folder: sites/adversarial-system/src/content/essays
     create: true
     slug: "{{slug}}"
@@ -19,13 +24,17 @@ collections:
     format: frontmatter
     fields:
       - { label: Title, name: title, widget: string }
-      - { label: Description, name: description, widget: string }
+      - { label: Description, name: description, widget: text }
       - { label: Date, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false }
       - { label: Draft, name: draft, widget: boolean, default: true }
-      - { label: Format, name: format, widget: select, options: [essay, podcast, video, teaser], default: essay }
+      - label: Format
+        name: format
+        widget: select
+        options: [essay, podcast, video, teaser]
+        default: essay
       - { label: Paywalled, name: paywalled, widget: boolean, default: false }
-      - { label: Hero, name: hero, widget: string, required: false }
-      - { label: Hero Alt, name: heroAlt, widget: string, required: false }
+      - { label: Hero path, name: hero, widget: string, required: false }
+      - { label: Hero alt, name: heroAlt, widget: string, required: false }
       - { label: Substack URL, name: substackUrl, widget: string, required: false }
       - { label: Tags, name: tags, widget: list, default: [] }
       - { label: Related slugs, name: related, widget: list, default: [] }

@@ -3,14 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
     <title>JAQ Content Admin</title>
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <script src="https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js"></script>
   </head>
   <body>
     <!--
-      Git-based CMS for essay markdown.
-      Requires GitHub OAuth (e.g. Netlify Identity / Decap proxy) for production edits.
-      Local: npx decap-server from repo root with local_backend if configured.
+      Local workflow:
+        1. npm run cms          # decap-server on :8081
+        2. npm run dev:jaq      # site on :4321
+        3. open http://localhost:4321/admin/
+
+      Production: configure GitHub OAuth (docs/CMS.md).
     -->
   </body>
 </html>

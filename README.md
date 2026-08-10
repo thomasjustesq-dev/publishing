@@ -169,3 +169,8 @@ sites keep short unscoped names (`just-asking-questions`, `adversarial-system`).
 - **Ship:** `npm run ship -- --site jaq --slug my-essay` validates one essay then `publish:check`.
 - **Zod:** root test helper is Zod 4; Astro content still uses `astro/zod`.
 - **TS 6:** no active TypeScript app packages (design archives only) — no tsup pin change required.
+
+## CMS
+
+See [`docs/CMS.md`](docs/CMS.md). Local: `npm run cms` + `npm run dev:jaq` → `/admin/`.
+
