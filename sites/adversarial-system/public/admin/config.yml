@@ -1,5 +1,7 @@
 # Decap CMS — The Adversarial System essays
 # Local: npm run cms + npm run dev:tas → http://localhost:4322/admin/
+# Production: shared OAuth host is JAQ (one GitHub OAuth App callback URL).
+# Both CMS UIs auth through https://www.just-asking-questions.com/api/*
 
 local_backend: true
 
@@ -7,8 +9,8 @@ backend:
   name: github
   repo: thomasjustesq-dev/publishing
   branch: main
-  base_url: https://api.netlify.com
-  auth_endpoint: auth
+  base_url: https://www.just-asking-questions.com
+  auth_endpoint: api/auth
 
 media_folder: sites/adversarial-system/public/essays/_uploads
 public_folder: /essays/_uploads

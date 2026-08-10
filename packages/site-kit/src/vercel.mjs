@@ -7,7 +7,7 @@ const securityHeaders = [
   { key: 'X-Frame-Options', value: 'DENY' },
 ];
 
-/** Looser CSP for Decap CMS admin shell (loads CMS from unpkg). */
+/** Looser CSP for Decap CMS admin shell (loads CMS from unpkg + GitHub OAuth). */
 const adminCsp = [
   "default-src 'self'",
   "base-uri 'none'",
@@ -17,7 +17,7 @@ const adminCsp = [
   "style-src 'self' 'unsafe-inline' https://unpkg.com",
   "img-src 'self' data: https:",
   "font-src 'self' data: https:",
-  "connect-src 'self' https://api.github.com https://github.com",
+  "connect-src 'self' https://api.github.com https://github.com https://www.just-asking-questions.com",
   "frame-src 'self' https://github.com",
 ].join('; ');
 

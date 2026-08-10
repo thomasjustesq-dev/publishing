@@ -1,6 +1,7 @@
 # Decap CMS — Just Asking Questions essays
 # Local: npm run cms  (decap-server proxy on :8081) + npm run dev:jaq
-# Production GitHub OAuth: set REPO secrets and deploy oauth proxy (see docs/CMS.md)
+# Production: GitHub OAuth via this site's /api/auth + /api/callback (docs/CMS.md)
+# local_backend only engages on localhost; production uses the github backend below.
 
 local_backend: true
 
@@ -8,8 +9,8 @@ backend:
   name: github
   repo: thomasjustesq-dev/publishing
   branch: main
-  base_url: https://api.netlify.com
-  auth_endpoint: auth
+  base_url: https://www.just-asking-questions.com
+  auth_endpoint: api/auth
 
 media_folder: sites/just-asking-questions/public/essays/_uploads
 public_folder: /essays/_uploads

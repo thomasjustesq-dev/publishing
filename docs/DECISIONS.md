@@ -50,3 +50,16 @@ author pages, cache headers, Substack frame embeds, Decap CMS admin shell,
 @pub/site-ui re-exports, Zod 4 for root tests, weekly substack-drift workflow,
 ship script. Full CMS backend auth still requires OAuth config. Paywalled 9/11
 full text remains teaser until Thomas supplies body.
+
+---
+
+## 2026-08-10 — Decap production OAuth host is JAQ
+
+**Decision:** Self-host GitHub OAuth for Decap as Vercel serverless
+`/api/auth` + `/api/callback` (zero npm OAuth deps). Both JAQ and TAS admin
+configs use `base_url: https://www.just-asking-questions.com` because a GitHub
+OAuth App has one callback URL. Token `postMessage` origins allow both www
+domains. Local CMS still uses `local_backend` + `decap-server`.
+
+**Rationale:** Netlify’s free OAuth proxy is not available for pure Vercel
+deploys; one OAuth App keeps operator setup simple for a two-site monorepo.

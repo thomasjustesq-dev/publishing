@@ -10,6 +10,10 @@ Grok session: finished publishing monorepo setup — pull main; archive DS packa
 add `@pub/site-kit`; single lockfile + Vercel root install; shared essay schema;
 About/404/Standards; JAQ favicon; self-hosted fonts; ports 4321/4322; docs.
 
+Grok: production Decap GitHub OAuth — `/api/auth` + `/api/callback` on both sites;
+shared JAQ OAuth host in both `config.yml`; admin CSP allows JAQ connect; CMS.md
+operator steps. Needs GitHub OAuth App + Vercel `OAUTH_GITHUB_*` secrets.
+
 ---
 
 ## 2026-08-04 — Process package land
