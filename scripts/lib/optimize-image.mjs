@@ -3,7 +3,7 @@
  * - Display: max width 1600, WebP quality 80
  * - Social OG: 1200×630 cover crop WebP
  */
-import { existsSync, statSync, unlinkSync } from 'node:fs';
+import { existsSync, renameSync, statSync, unlinkSync } from 'node:fs';
 import { basename, dirname, extname, join } from 'node:path';
 import sharp from 'sharp';
 
@@ -54,15 +54,23 @@ export async function optimizeEssayImage(inputPath, options = {}) {
     return { displayPath: inputPath, ogPath: og, displayBytes: inputBytes, skipped: true };
   }
 
+  // sharp cannot read and write the same path; stage when re-encoding webp in place.
+  const displayTmp = inputPath === displayPath ? `${displayPath}.tmp.webp` : displayPath;
+
   await sharp(inputPath)
     .rotate()
     .resize({ width: DISPLAY_MAX_WIDTH, withoutEnlargement: true })
     .webp({ quality: DISPLAY_QUALITY, effort: 4 })
-    .toFile(displayPath);
+    .toFile(displayTmp);
+
+  if (displayTmp !== displayPath) {
+    renameSync(displayTmp, displayPath);
+  }
 
   let og = null;
   if (writeOg && (base === 'cover' || writeOg === 'always')) {
-    await sharp(inputPath)
+    const ogSource = existsSync(displayPath) ? displayPath : inputPath;
+    await sharp(ogSource)
       .rotate()
       .resize(OG_WIDTH, OG_HEIGHT, { fit: 'cover', position: 'attention' })
       .webp({ quality: 80, effort: 4 })
@@ -76,13 +84,10 @@ export async function optimizeEssayImage(inputPath, options = {}) {
     existsSync(inputPath) &&
     ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif'].includes(inputExt)
   ) {
-    // Keep original only if optimize failed to beat it meaningfully and same path — else delete source when different file.
-    if (extname(inputPath).toLowerCase() !== '.webp' || inputPath !== displayPath) {
-      try {
-        unlinkSync(inputPath);
-      } catch {
-        /* ignore */
-      }
+    try {
+      unlinkSync(inputPath);
+    } catch {
+      /* ignore */
     }
   }
 
