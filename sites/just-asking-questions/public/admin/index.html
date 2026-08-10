@@ -9,12 +9,9 @@
   </head>
   <body>
     <!--
-      Local workflow:
-        1. npm run cms          # decap-server on :8081
-        2. npm run dev:jaq      # site on :4321
-        3. open http://localhost:4321/admin/
-
-      Production: configure GitHub OAuth (docs/CMS.md).
+      Local: npm run cms && npm run dev:jaq → http://localhost:4321/admin/
+      Production: GitHub OAuth via /api/auth (docs/CMS.md). Set
+      OAUTH_GITHUB_CLIENT_ID + OAUTH_GITHUB_CLIENT_SECRET on Vercel.
     -->
   </body>
 </html>

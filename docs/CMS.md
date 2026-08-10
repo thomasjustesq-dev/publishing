@@ -17,25 +17,60 @@ npm run dev:jaq   # or dev:tas
 ```
 
 `local_backend: true` in each site’s `public/admin/config.yml` talks to
-`decap-server` on port 8081. Saves land as files under `sites/*/src/content/essays/`.
-Commit and push as usual.
+`decap-server` on port 8081 **only when the admin UI is on localhost**. Saves land
+as files under `sites/*/src/content/essays/`. Commit and push as usual.
 
 ## Production GitHub OAuth
 
-The GitHub backend needs an OAuth app + auth proxy. Options:
+Each site ships serverless handlers:
 
-1. **Netlify Identity / Decap proxy** (default `base_url: https://api.netlify.com`)
-2. **Self-hosted** [decap-cms-oauth](https://github.com/vencax/netlify-cms-github-oauth-provider) or similar on Vercel
+| Path | Role |
+| --- | --- |
+| `/api/auth` | Redirect to GitHub authorize |
+| `/api/callback` | Exchange code → access token; `postMessage` to Decap |
 
-Steps for a GitHub OAuth App:
+GitHub OAuth Apps allow **one** Authorization callback URL. Both CMS configs
+therefore use **JAQ as the OAuth host**:
 
-1. GitHub → Settings → Developer settings → OAuth Apps → New  
-2. Homepage: `https://www.just-asking-questions.com`  
-3. Callback: proxy callback URL (provider-specific)  
-4. Set client id/secret on the proxy  
-5. Point `backend.base_url` / `auth_endpoint` in `config.yml` at the proxy  
+```yaml
+backend:
+  name: github
+  repo: thomasjustesq-dev/publishing
+  branch: main
+  base_url: https://www.just-asking-questions.com
+  auth_endpoint: api/auth
+```
 
-Until OAuth is live, use **local CMS** + PR/push for production content.
+TAS admin at `https://www.theadversarialsystem.com/admin/` still works — the login
+popup hits JAQ’s `/api/*`, and the callback allows both origins.
+
+### Operator setup (one-time)
+
+1. **GitHub → Settings → Developer settings → OAuth Apps → New OAuth App**
+   - Application name: `Publishing Decap CMS`
+   - Homepage URL: `https://www.just-asking-questions.com`
+   - Authorization callback URL: `https://www.just-asking-questions.com/api/callback`
+2. **Vercel → just-asking-questions → Settings → Environment Variables** (Production + Preview):
+
+   | Name | Value |
+   | --- | --- |
+   | `OAUTH_GITHUB_CLIENT_ID` | OAuth App client id |
+   | `OAUTH_GITHUB_CLIENT_SECRET` | OAuth App client secret |
+   | `OAUTH_ORIGINS` | `https://www.just-asking-questions.com,https://www.theadversarialsystem.com` |
+   | `OAUTH_REDIRECT_URL` | `https://www.just-asking-questions.com/api/callback` (optional; default matches host) |
+
+3. Redeploy JAQ (env vars apply on next deploy).
+4. Open `https://www.just-asking-questions.com/admin/` → Login with GitHub.
+5. Same login from `https://www.theadversarialsystem.com/admin/` (popup uses JAQ host).
+
+Repo access: the GitHub user must have write access to `thomasjustesq-dev/publishing`.
+Scopes requested: `repo,user`.
+
+### Optional: host OAuth on TAS instead
+
+Mirror the same env vars on the adversarial-system Vercel project, set the OAuth
+App callback to `https://www.theadversarialsystem.com/api/callback`, and point both
+`config.yml` `base_url` values at that host.
 
 ## Media
 

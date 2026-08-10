@@ -8,14 +8,15 @@
 - Assigned By: Thomas
 - Date Claimed: 2026-08-10
 - Last Updated: 2026-08-10
-- Status: Active
+- Status: PR Open
 - Blocked By: none
-- Pull Request: none
+- Pull Request: https://github.com/thomasjustesq-dev/publishing/pull/25
 
 ## Scope
 
 - Production Decap GitHub OAuth proxy on Vercel for JAQ and TAS admin
-- TODO: what this claim will not do
+- Does not create the GitHub OAuth App or set Vercel secrets (operator)
+- Does not paste 9/11 full essay text
 
 ## Write surface
 
@@ -23,6 +24,8 @@
 - `sites/adversarial-system/api/`
 - `sites/just-asking-questions/public/admin/`
 - `sites/adversarial-system/public/admin/`
+- `sites/just-asking-questions/vercel.json`
+- `sites/adversarial-system/vercel.json`
 - `docs/CMS.md`
 - `docs/SESSION_LOG.md`
 - `docs/DECISIONS.md`
@@ -31,11 +34,12 @@
 
 ## Hot spots
 
-- TODO: shared surfaces expected to change
+- Admin CSP / Vercel headers (shared site-kit generator)
+- CMS config base_url (both sites → JAQ OAuth host)
 
 ## Handoff
 
-- Touched files: none yet
-- Tests run: none yet
-- Remaining acceptance criteria: all
+- Touched files: api/auth + api/callback both sites; admin config/index; CMS.md; site-kit CSP; vercel.json sync
+- Tests run: `npm run check`
+- Remaining acceptance criteria: operator creates OAuth App + Vercel env; smoke Login with GitHub on /admin/
 - Open questions: none
