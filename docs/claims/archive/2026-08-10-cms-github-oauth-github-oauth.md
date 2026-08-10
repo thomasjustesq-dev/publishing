@@ -8,7 +8,8 @@
 - Assigned By: Thomas
 - Date Claimed: 2026-08-10
 - Last Updated: 2026-08-10
-- Status: PR Open
+- Date Closed: 2026-08-10
+- Status: Merged
 - Blocked By: none
 - Pull Request: https://github.com/thomasjustesq-dev/publishing/pull/25
 
@@ -39,7 +40,7 @@
 
 ## Handoff
 
+- Closed: OAuth code merged (#25). Secrets still operator (`scripts/set-oauth-env.mjs`).
 - Touched files: api/auth + api/callback both sites; admin config/index; CMS.md; site-kit CSP; vercel.json sync
 - Tests run: `npm run check`
-- Remaining acceptance criteria: operator creates OAuth App + Vercel env; smoke Login with GitHub on /admin/
-- Open questions: none
+- Remaining: create GitHub OAuth App + Vercel env; smoke `/admin/`
