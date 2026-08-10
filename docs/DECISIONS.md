@@ -63,3 +63,16 @@ domains. Local CMS still uses `local_backend` + `decap-server`.
 
 **Rationale:** Netlify’s free OAuth proxy is not available for pure Vercel
 deploys; one OAuth App keeps operator setup simple for a two-site monorepo.
+
+---
+
+## 2026-08-10 — 9/11 essay free full text on JAQ
+
+**Decision:** Replace the Substack teaser stub with a full free essay on the
+designed site (`format: essay`, `paywalled: false`). Body uses the Substack
+opening paragraph plus narrative drawn from the campaign 9/11 post materials
+(not a dump of the paid Substack HTML, which the public API does not return).
+
+**Rationale:** Canonical site should not force a paywall for this piece;
+Substack remains the distribution link via `substackUrl`. Author may later
+swap in verbatim Substack prose if desired.

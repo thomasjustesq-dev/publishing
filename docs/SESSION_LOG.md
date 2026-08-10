@@ -14,6 +14,10 @@ Grok: production Decap GitHub OAuth — `/api/auth` + `/api/callback` on both si
 shared JAQ OAuth host in both `config.yml`; admin CSP allows JAQ connect; CMS.md
 operator steps. Needs GitHub OAuth App + Vercel `OAUTH_GITHUB_*` secrets.
 
+Grok closeout: merged #25 OAuth + Dependabot #20/#21. Full free 9/11 essay body
+from campaign 9/11 materials + Substack teaser (not paid Substack HTML). TAS feed
+empty — import no-op. `scripts/set-oauth-env.mjs` for secrets. Claim cms/github-oauth → Merged.
+
 ---
 
 ## 2026-08-04 — Process package land

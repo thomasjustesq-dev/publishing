@@ -1,45 +1,34 @@
 # Todo / handoff
 
-**Updated:** 2026-08-10 (Grok — Decap OAuth code)  
+**Updated:** 2026-08-10 (closeout)  
 **Repo:** `/Volumes/Crucial X8/GitHub/Projects/publishing`  
-**Branch:** `agent/grok/task-github-oauth` (work PR when ready)
+**Branch:** `main`
 
-## Do next (you)
+## Do next (you — ~2 minutes)
 
-1. **GitHub OAuth App + Vercel secrets** (unblocks production `/admin/` login)  
-   See **`docs/CMS.md`**. Create OAuth App with callback  
-   `https://www.just-asking-questions.com/api/callback`. Set on JAQ Vercel project:  
-   `OAUTH_GITHUB_CLIENT_ID`, `OAUTH_GITHUB_CLIENT_SECRET`,  
-   `OAUTH_ORIGINS=https://www.just-asking-questions.com,https://www.theadversarialsystem.com`  
-   Redeploy JAQ; smoke `https://www.just-asking-questions.com/admin/` and TAS admin.
+1. **Finish GitHub OAuth App** (browser should be open at applications/new)  
+   - Homepage: `https://www.just-asking-questions.com`  
+   - Callback: `https://www.just-asking-questions.com/api/callback`  
+   - Then:
+     ```sh
+     export OAUTH_GITHUB_CLIENT_ID=...
+     export OAUTH_GITHUB_CLIENT_SECRET=...
+     node scripts/set-oauth-env.mjs
+     # redeploy JAQ when Vercel rate limit clears (~24h from earlier bursts)
+     ```
+   - Smoke: `https://www.just-asking-questions.com/admin/`
 
-2. **9/11 essay full text** — `sites/just-asking-questions/src/content/essays/from-911-to-the-bench-a-journey-of.md`  
-   Still a **paywalled teaser** (Substack API only returns the free preview). Paste the full body when you have it, set `format: "essay"`, `paywalled: false`, then `npm run publish:check`.
+2. **Optional: replace 9/11 body with Substack author export**  
+   Site now has a full free essay reconstructed from the campaign 9/11 post + Substack teaser (not the paid Substack HTML). If you want byte-identical Substack prose, paste from author dashboard and keep `paywalled: false`.
 
-3. **TAS Substack** — site has charter filing *Opening the docket*. When Substack has posts:  
-   `npm run import:substack -- --site tas`
+## Already done
 
-## Already done (don’t redo)
-
-- Two-site monorepo (JAQ + TAS), Astro-first, `@pub/core` + `@pub/site-kit`  
-- JAQ: 6 essays from Substack, image WebP pipeline, tags, search (Pagefind), author, reading UX  
-- TAS: charter essay, empty-state mission copy  
-- Draft preview env, ship/drift scripts, Decap **local** admin, CSP/cache headers  
-- Decap **production OAuth handlers** (code) — secrets still operator  
-- Vercel env confirmed present: both projects have `PUBLIC_SITE_URL` (Production + Preview),  
-  `PUBLIC_SHOW_DRAFTS` (Preview), `SUBSTACK_FEED_URL` (Production + Preview + Dev)  
-- Docs: `README.md`, `docs/CMS.md`, `docs/DECISIONS.md`
-
-## Quick commands
-
-```sh
-cd "/Volumes/Crucial X8/GitHub/Projects/publishing"
-git pull
-npm install
-npm run check
-npm run dev:jaq    # :4321
-# npm run cms      # Decap local backend :8081 → open /admin/
-```
+- Two-site monorepo, Decap local + production OAuth *code* (#25)  
+- Dependabot checkout v7 + claude-code-action bumps merged  
+- 9/11 essay: full free body on site (`format: essay`, `paywalled: false`)  
+- TAS Substack import: **no posts** on feed (nothing to import)  
+- Vercel env: `PUBLIC_SITE_URL`, `PUBLIC_SHOW_DRAFTS` (Preview), `SUBSTACK_FEED_URL` present  
+- `scripts/set-oauth-env.mjs` for one-shot secret push  
 
 ## Live
 

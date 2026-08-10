@@ -11,5 +11,6 @@ Append-only. `merge=union`.
 
 ## 2026-08-10
 
-1. **[OPEN]** Are Vercel Production env vars (`PUBLIC_SITE_URL`, `SUBSTACK_FEED_URL`) set for both projects?
+1. **[RESOLVED]** Vercel Production env vars (`PUBLIC_SITE_URL`, `SUBSTACK_FEED_URL`) present on both projects; `PUBLIC_SHOW_DRAFTS` on Preview.
 2. **[OPEN]** Is `justaskingquestion.com` redirect wired on the JAQ project?
+3. **[OPEN]** GitHub OAuth App client id/secret for Decap (code shipped; secrets not set). Use `scripts/set-oauth-env.mjs` after creating the app.
