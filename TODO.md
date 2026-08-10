@@ -4,6 +4,8 @@
 
 ## Done (upgrade wave)
 
+- sharp 0.35.3 (Dependabot high cleared locally; audit 0)
+
 - Image optimize pipeline (sharp/WebP) + hero budgets
 - Essay schema: format, media, paywall, import flags
 - Astro essay components + tags + JSON-LD + draft preview
@@ -12,8 +14,8 @@
 
 ## Operator (Thomas)
 
-- [ ] Vercel Preview: set `PUBLIC_SHOW_DRAFTS=1` on both projects (CLI was interactive)
-- [ ] Confirm Preview vs Production env separation
+- [x] Vercel Preview: `PUBLIC_SHOW_DRAFTS=1` on both projects
+- [x] Preview/Production `PUBLIC_SITE_URL` set to www on both projects
 - [ ] Paste full text for paywalled 9/11 essay when ready
 - [ ] First TAS Substack post → `npm run import:substack -- --site tas`
 
