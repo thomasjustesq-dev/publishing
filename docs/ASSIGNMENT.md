@@ -18,7 +18,7 @@ If every continuous slot is **empty**, agents may only:
 
 | Slot | Owner | Task ID | Claim on main? | Work PR | Notes |
 | --- | --- | --- | --- | --- | --- |
-| Continuous — Grok | | | | | process package 2026-08-04 |
+| Continuous — Grok | Grok | cms/github-oauth | yes |  |  |
 | Continuous — Codex | | | | | |
 | Continuous — Kimi | | | | | |
 | On-demand — Claude | | | | | |
