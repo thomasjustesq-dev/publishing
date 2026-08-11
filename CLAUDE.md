@@ -51,3 +51,8 @@ scripts/archive-merged-claims.sh --apply
 
 - Prefer small, reviewable PRs.
 - Do not self-select ROADMAP items when ASSIGNMENT is empty.
+
+## Fleet inference preference
+
+When selecting an LLM provider, prefer **Grok → Gemini → Kimi → OpenAI → Anthropic** (see `FLEET_INFERENCE.md`).
+
