@@ -44,27 +44,23 @@ backend:
 TAS admin at `https://www.theadversarialsystem.com/admin/` still works — the login
 popup hits JAQ’s `/api/*`, and the callback allows both origins.
 
-### Operator setup (one-time)
+### Status (2026-08-11)
 
-1. **GitHub → Settings → Developer settings → OAuth Apps → New OAuth App**
-   - Application name: `Publishing Decap CMS`
-   - Homepage URL: `https://www.just-asking-questions.com`
-   - Authorization callback URL: `https://www.just-asking-questions.com/api/callback`
-2. **Vercel → just-asking-questions → Settings → Environment Variables** (Production + Preview):
+**Live.** OAuth App + JAQ Vercel `OAUTH_GITHUB_*` secrets are set. Production
+admin: https://www.just-asking-questions.com/admin/ and
+https://www.theadversarialsystem.com/admin/ (both auth via JAQ `/api/*`).
+Commits land on `main` with `content(jaq|tas): …` messages.
 
-   | Name | Value |
-   | --- | --- |
-   | `OAUTH_GITHUB_CLIENT_ID` | OAuth App client id |
-   | `OAUTH_GITHUB_CLIENT_SECRET` | OAuth App client secret |
-   | `OAUTH_ORIGINS` | `https://www.just-asking-questions.com,https://www.theadversarialsystem.com` |
-   | `OAUTH_REDIRECT_URL` | `https://www.just-asking-questions.com/api/callback` (optional; default matches host) |
+### Operator setup (already done — reference)
 
-3. Redeploy JAQ (env vars apply on next deploy).
-4. Open `https://www.just-asking-questions.com/admin/` → Login with GitHub.
-5. Same login from `https://www.theadversarialsystem.com/admin/` (popup uses JAQ host).
+1. GitHub OAuth App **Publishing Decap CMS** — callback  
+   `https://www.just-asking-questions.com/api/callback`
+2. JAQ Vercel env: `OAUTH_GITHUB_CLIENT_ID`, `OAUTH_GITHUB_CLIENT_SECRET`,
+   `OAUTH_ORIGINS`, optional `OAUTH_REDIRECT_URL` — use `npm run oauth:env`
+3. Redeploy JAQ after secret changes
 
-Repo access: the GitHub user must have write access to `thomasjustesq-dev/publishing`.
-Scopes requested: `repo,user`.
+Repo access: GitHub user must have write access to `thomasjustesq-dev/publishing`.
+Scopes: `repo,user`.
 
 ### Optional: host OAuth on TAS instead
 

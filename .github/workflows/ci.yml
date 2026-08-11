@@ -35,6 +35,9 @@ jobs:
       - name: Build sites
         run: npm run build
 
+      - name: Publish check (live essays + pagefind indexes)
+        run: npm run publish:check
+
       - name: Verify Vercel configs stay in sync with site-kit
         shell: bash
         run: |

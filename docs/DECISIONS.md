@@ -76,3 +76,14 @@ opening paragraph plus narrative drawn from the campaign 9/11 post materials
 **Rationale:** Canonical site should not force a paywall for this piece;
 Substack remains the distribution link via `substackUrl`. Author may later
 swap in verbatim Substack prose if desired.
+
+---
+
+## 2026-08-11 — CMS commits to main; CI publish:check
+
+**Decision:** Keep Decap `backend.branch: main` for solo authoring with
+prefixed commit messages. Add `publish:check` to CI after build so zero-live-essay
+or broken pagefind fails the suite.
+
+**Rationale:** Editorial-branch workflow adds friction without a second editor;
+ship-check belongs in required CI.

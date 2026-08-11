@@ -12,13 +12,17 @@
 
 | Item | Status | Notes |
 | --- | --- | --- |
-| Multi-agent coordination package | **Done** | Landed 2026-08-04 |
-| Monorepo finish (Astro-first, site-kit, parity, fonts) | **Done** | Landed 2026-08-10 |
-| Vercel domains + env cutover | **Next** | Operator / Thomas |
-| First published essays | **Next** | Content, not scaffolding |
+| Multi-agent coordination package | **Done** | 2026-08-04 |
+| Monorepo finish (Astro-first, site-kit, parity, fonts) | **Done** | 2026-08-10 |
+| Vercel domains + env cutover | **Done** | Both projects; typo domain redirect verified |
+| Decap production OAuth | **Done** | JAQ host for both admin UIs |
+| First published essays | **Done (seed)** | JAQ: 6 Substack imports + free 9/11; TAS: charter |
+| Inference canary / model secrets | **Done** | Fleet XAI + soft OpenAI/Gemini/Moonshot |
+| Ongoing content | **Next** | Thomas / assigned Task ID — write and ship essays |
 | Next product work | **Next** | Thomas assigns Task ID |
 
 ## Related
 
 - [`ASSIGNMENT.md`](ASSIGNMENT.md)
 - [`WORKBOARD.md`](WORKBOARD.md)
+- [`TODO.md`](../TODO.md)

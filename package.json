@@ -27,7 +27,8 @@
     "substack:drift": "node scripts/substack-drift.mjs",
     "sync:vercel": "node scripts/sync-vercel-config.mjs",
     "cms": "decap-server",
-    "cms:jaq": "echo \"Open http://localhost:4321/admin/ after: npm run cms & npm run dev:jaq\""
+    "cms:jaq": "echo \"Open http://localhost:4321/admin/ after: npm run cms & npm run dev:jaq\"",
+    "oauth:env": "node scripts/set-oauth-env.mjs"
   },
   "devDependencies": {
     "decap-server": "^3.10.0",
