@@ -18,7 +18,7 @@ If every continuous slot is **empty**, agents may only:
 
 | Slot | Owner | Task ID | Claim on main? | Work PR | Notes |
 | --- | --- | --- | --- | --- | --- |
-| Continuous — Grok | | | | | |
+| Continuous — Grok | Grok | product/publishing-closeout | yes |  |  |
 | Continuous — Codex | | | | | |
 | Continuous — Kimi | | | | | |
 | On-demand — Claude | | | | | |
