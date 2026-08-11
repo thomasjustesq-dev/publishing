@@ -10,7 +10,7 @@
 - Last Updated: 2026-08-11
 - Status: PR Open
 - Blocked By: none
-- Pull Request: pending
+- Pull Request: https://github.com/thomasjustesq-dev/publishing/pull/30
 
 ## Scope
 
