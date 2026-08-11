@@ -9,8 +9,8 @@ Each has a designed Astro website (canonical home of every essay) and a Substack
 | Just Asking Questions | https://just-asking-questions.com | https://thomasjustaskingquestions.substack.com | `npm run dev:jaq` → :4321 |
 | The Adversarial System | https://theadversarialsystem.com | https://theadversarialsystem.substack.com | `npm run dev:tas` → :4322 |
 
-`justaskingquestion.com` is also registered — point it at the JAQ Vercel project as a
-redirect domain so the typo variant still lands.
+`justaskingquestion.com` (typo) is on the JAQ Vercel project and 308s to
+`www.just-asking-questions.com`.
 
 ## Architecture
 

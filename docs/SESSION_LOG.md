@@ -18,6 +18,10 @@ Grok closeout: merged #25 OAuth + Dependabot #20/#21. Full free 9/11 essay body
 from campaign 9/11 materials + Substack teaser (not paid Substack HTML). TAS feed
 empty — import no-op. `scripts/set-oauth-env.mjs` for secrets. Claim cms/github-oauth → Merged.
 
+Grok product/publishing-closeout: resolved OPEN_QUESTIONS (OAuth, typo domain, REPO_PAT);
+ROADMAP/TODO refresh; Decap config polish (commit messages, preview paths, hints);
+admin X-Robots-Tag; CI publish:check. Content remains operator writing.
+
 ---
 
 ## 2026-08-04 — Process package land

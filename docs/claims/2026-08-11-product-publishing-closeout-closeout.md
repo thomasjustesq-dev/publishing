@@ -8,14 +8,16 @@
 - Assigned By: Thomas
 - Date Claimed: 2026-08-11
 - Last Updated: 2026-08-11
-- Status: Active
+- Status: PR Open
 - Blocked By: none
-- Pull Request: none
+- Pull Request: pending
 
 ## Scope
 
-- Docs/TODO/OPEN_QUESTIONS refresh; Decap smoke; CMS polish; REPO_PAT check; TAS/JAQ content hygiene; ROADMAP/ASSIGNMENT update
-- TODO: what this claim will not do
+- Docs/TODO/OPEN_QUESTIONS/ROADMAP refresh (OAuth, domains, REPO_PAT resolved)
+- Decap CMS polish (commit messages, preview paths, field hints)
+- Admin `X-Robots-Tag: noindex`; CI `publish:check`
+- Does **not** invent new essays or Substack posts for Thomas
 
 ## Write surface
 
@@ -27,14 +29,15 @@
 - `scripts/`
 - `packages/site-kit/`
 - `.github/`
+- `package.json`
 
 ## Hot spots
 
-- TODO: shared surfaces expected to change
+- `docs/OPEN_QUESTIONS.md`, `TODO.md` (handoff)
+- Decap `public/admin/config.yml` both sites
+- `packages/site-kit/src/vercel.mjs` → regenerated `vercel.json`
 
 ## Handoff
 
-- Touched files: none yet
-- Tests run: none yet
-- Remaining acceptance criteria: all
-- Open questions: none
+- Smoke: `/api/auth` 302, admin 200, publish:check pass, REPO_PAT secret present
+- Remaining: Thomas writes essays; optional Substack 9/11 paste; TAS Substack when feed has posts

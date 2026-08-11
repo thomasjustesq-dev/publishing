@@ -11,6 +11,17 @@ backend:
   branch: main
   base_url: https://www.just-asking-questions.com
   auth_endpoint: api/auth
+  commit_messages:
+    create: "content(tas): create {{collection}} “{{slug}}”"
+    update: "content(tas): update {{collection}} “{{slug}}”"
+    delete: "content(tas): delete {{collection}} “{{slug}}”"
+    uploadMedia: "content(tas): upload {{path}}"
+    deleteMedia: "content(tas): delete media {{path}}"
+
+site_url: https://www.theadversarialsystem.com
+display_url: https://www.theadversarialsystem.com
+logo_url: /brand/monogram.png
+show_preview_links: true
 
 media_folder: sites/adversarial-system/public/essays/_uploads
 public_folder: /essays/_uploads
@@ -24,9 +35,12 @@ collections:
     slug: "{{slug}}"
     extension: md
     format: frontmatter
+    preview_path: essays/{{slug}}/
+    summary: "{{title}} ({{date}})"
+    sortable_fields: ["title", "date", "draft"]
     fields:
       - { label: Title, name: title, widget: string }
-      - { label: Description, name: description, widget: text }
+      - { label: Description, name: description, widget: text, hint: "SEO / card blurb" }
       - { label: Date, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false }
       - { label: Draft, name: draft, widget: boolean, default: true }
       - label: Format
@@ -35,9 +49,9 @@ collections:
         options: [essay, podcast, video, teaser]
         default: essay
       - { label: Paywalled, name: paywalled, widget: boolean, default: false }
-      - { label: Hero path, name: hero, widget: string, required: false }
+      - { label: Hero path, name: hero, widget: string, required: false, hint: "/essays/slug/cover.webp" }
       - { label: Hero alt, name: heroAlt, widget: string, required: false }
       - { label: Substack URL, name: substackUrl, widget: string, required: false }
-      - { label: Tags, name: tags, widget: list, default: [] }
-      - { label: Related slugs, name: related, widget: list, default: [] }
+      - { label: Tags, name: tags, widget: list, default: [], allow_add: true }
+      - { label: Related slugs, name: related, widget: list, default: [], allow_add: true }
       - { label: Body, name: body, widget: markdown }

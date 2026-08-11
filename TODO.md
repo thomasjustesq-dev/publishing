@@ -1,34 +1,32 @@
 # Todo / handoff
 
-**Updated:** 2026-08-10 (closeout)  
+**Updated:** 2026-08-11 (Grok closeout)  
 **Repo:** `/Volumes/Crucial X8/GitHub/Projects/publishing`  
 **Branch:** `main`
 
-## Do next (you — ~2 minutes)
+## Operator (optional only)
 
-1. **Finish GitHub OAuth App** (browser should be open at applications/new)  
-   - Homepage: `https://www.just-asking-questions.com`  
-   - Callback: `https://www.just-asking-questions.com/api/callback`  
-   - Then:
-     ```sh
-     export OAUTH_GITHUB_CLIENT_ID=...
-     export OAUTH_GITHUB_CLIENT_SECRET=...
-     node scripts/set-oauth-env.mjs
-     # redeploy JAQ when Vercel rate limit clears (~24h from earlier bursts)
-     ```
-   - Smoke: `https://www.just-asking-questions.com/admin/`
+1. **Smoke Decap once** — https://www.just-asking-questions.com/admin/ → Login with GitHub.  
+   OAuth App + Vercel secrets are already live (`/api/auth` → GitHub 302).
 
-2. **Optional: replace 9/11 body with Substack author export**  
-   Site now has a full free essay reconstructed from the campaign 9/11 post + Substack teaser (not the paid Substack HTML). If you want byte-identical Substack prose, paste from author dashboard and keep `paywalled: false`.
+2. **Substack-accurate 9/11 body (optional)** — free full essay is live from campaign materials + Substack teaser. Replace with author export if you want Substack prose verbatim.
+
+3. **TAS Substack** — feed still empty. When posts exist:  
+   `npm run import:substack -- --site tas`
+
+4. **Write / publish essays** — product is content. Scaffold with:  
+   `npm run new-essay -- --site jaq|tas --slug … --title "…"`
 
 ## Already done
 
-- Two-site monorepo, Decap local + production OAuth *code* (#25)  
-- Dependabot checkout v7 + claude-code-action bumps merged  
-- 9/11 essay: full free body on site (`format: essay`, `paywalled: false`)  
-- TAS Substack import: **no posts** on feed (nothing to import)  
-- Vercel env: `PUBLIC_SITE_URL`, `PUBLIC_SHOW_DRAFTS` (Preview), `SUBSTACK_FEED_URL` present  
-- `scripts/set-oauth-env.mjs` for one-shot secret push  
+- Two-site monorepo (JAQ + TAS), Astro, SEO, search, drafts, images  
+- Decap local + production OAuth (code + secrets + deploy)  
+- Domains on Vercel (www + apex + typo `justaskingquestion.com` → JAQ www)  
+- Vercel env: `PUBLIC_SITE_URL`, `PUBLIC_SHOW_DRAFTS` (Preview), `SUBSTACK_FEED_URL`, OAuth  
+- REPO_PAT set (claim-reconcile)  
+- 9/11 essay free full body; TAS charter *Opening the docket*  
+- Fleet inference canary + multi-provider preflights  
+- Docs/OPEN_QUESTIONS/ROADMAP refreshed in product/publishing-closeout  
 
 ## Live
 
@@ -36,3 +34,5 @@
 | --- | --- |
 | JAQ | https://www.just-asking-questions.com |
 | TAS | https://www.theadversarialsystem.com |
+| JAQ admin | https://www.just-asking-questions.com/admin/ |
+| TAS admin | https://www.theadversarialsystem.com/admin/ |

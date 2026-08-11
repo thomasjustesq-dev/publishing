@@ -11,6 +11,17 @@ backend:
   branch: main
   base_url: https://www.just-asking-questions.com
   auth_endpoint: api/auth
+  commit_messages:
+    create: "content(jaq): create {{collection}} “{{slug}}”"
+    update: "content(jaq): update {{collection}} “{{slug}}”"
+    delete: "content(jaq): delete {{collection}} “{{slug}}”"
+    uploadMedia: "content(jaq): upload {{path}}"
+    deleteMedia: "content(jaq): delete media {{path}}"
+
+site_url: https://www.just-asking-questions.com
+display_url: https://www.just-asking-questions.com
+logo_url: /brand/monogram.png
+show_preview_links: true
 
 media_folder: sites/just-asking-questions/public/essays/_uploads
 public_folder: /essays/_uploads
@@ -24,22 +35,25 @@ collections:
     slug: "{{slug}}"
     extension: md
     format: frontmatter
+    preview_path: essays/{{slug}}/
+    summary: "{{title}} ({{date}})"
+    sortable_fields: ["title", "date", "draft"]
     fields:
       - { label: Title, name: title, widget: string }
-      - { label: Description, name: description, widget: text }
+      - { label: Description, name: description, widget: text, hint: "SEO / card blurb (~140–160 chars)" }
       - { label: Date, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false }
-      - { label: Draft, name: draft, widget: boolean, default: true }
+      - { label: Draft, name: draft, widget: boolean, default: true, hint: "true = hidden on production unless PUBLIC_SHOW_DRAFTS" }
       - label: Format
         name: format
         widget: select
         options: [essay, podcast, video, teaser]
         default: essay
       - { label: Paywalled, name: paywalled, widget: boolean, default: false }
-      - { label: Hero path, name: hero, widget: string, required: false, hint: "/essays/slug/cover.webp" }
+      - { label: Hero path, name: hero, widget: string, required: false, hint: "/essays/slug/cover.webp — run npm run optimize:images after upload" }
       - { label: Hero alt, name: heroAlt, widget: string, required: false }
       - { label: Substack URL, name: substackUrl, widget: string, required: false }
       - { label: Video URL, name: videoUrl, widget: string, required: false }
       - { label: Audio URL, name: audioUrl, widget: string, required: false }
-      - { label: Tags, name: tags, widget: list, default: [] }
-      - { label: Related slugs, name: related, widget: list, default: [] }
+      - { label: Tags, name: tags, widget: list, default: [], allow_add: true }
+      - { label: Related slugs, name: related, widget: list, default: [], allow_add: true, hint: "Essay ids without .md" }
       - { label: Body, name: body, widget: markdown }
