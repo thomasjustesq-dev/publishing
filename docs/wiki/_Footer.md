@@ -1,0 +1,1 @@
+Publishing internal wiki. Canonical living documents remain `README.md`, `CLAUDE.md`, and `docs/`. Snapshot of `origin/main` at `ad36232` (2026-08-19). Two publications (JAQ + TAS); not a public CMS product surface.

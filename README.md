@@ -12,6 +12,8 @@ Each has a designed Astro website (canonical home of every essay) and a Substack
 `justaskingquestion.com` (typo) is on the JAQ Vercel project and 308s to
 `www.just-asking-questions.com`.
 
+The internal operator and agent handbook is [`docs/wiki/`](docs/wiki/README.md), also published on the GitHub [Wiki](https://github.com/thomasjustesq-dev/publishing/wiki). It orients; it does not replace `README.md`, `CLAUDE.md`, or `docs/`.
+
 ## Architecture
 
 ```
@@ -22,6 +24,7 @@ sites/
   just-asking-questions/   Astro site (brand tokens + layouts)
   adversarial-system/      Astro site (brand tokens + layouts)
 design/archives/           archived React design-sync kits (reference only, not built)
+docs/wiki/                 internal handbook (also the GitHub Wiki)
 scripts/                   content checks, Substack export, essay scaffold, vercel sync
 ```
 
