@@ -2,6 +2,8 @@
 
 Publishing / writing projects repository.
 
+The internal handbook is `docs/wiki/`.
+
 ## Who this applies to
 
 **Every agent, not only Claude.** `AGENTS.md`, `GEMINI.md`, `.cursorrules` and
