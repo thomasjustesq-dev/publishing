@@ -10,6 +10,8 @@
 
 ## Status
 
+Pinned to `origin/main` `80641eb` (PR #40, 2026-08-25). LIVE_CLAIMS is empty.
+
 | Item | Status | Notes |
 | --- | --- | --- |
 | Multi-agent coordination package | **Done** | 2026-08-04 |
@@ -18,8 +20,12 @@
 | Decap production OAuth | **Done** | JAQ host for both admin UIs |
 | First published essays | **Done (seed)** | JAQ: 6 Substack imports + free 9/11; TAS: charter |
 | Inference canary / model secrets | **Done** | Fleet XAI + soft OpenAI/Gemini/Moonshot |
-| Ongoing content | **Next** | Thomas / assigned Task ID — write and ship essays |
-| Next product work | **Next** | Thomas assigns Task ID |
+| Publishing closeout | **Done** | #30 docs, Decap polish, CI `publish:check` |
+| Internal wiki handbook | **Done** | PR #40 merged 2026-08-25. GitHub Wiki remote still needs a logged-in first page. |
+| Ongoing content | **Next** | Thomas / assigned Task ID — write and ship essays. Capture in vault `Writing/Idea Hopper.md` first. |
+| Next product work | **None** | ASSIGNMENT owns next. Do not revive `design/archives/`. |
+
+Dependabot PRs (#36–#39) are not a product slot. Do not self-select them from this file.
 
 ## Related
 
