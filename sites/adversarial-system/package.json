@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
-    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/sitemap": "^3.7.4",
     "@fontsource/ibm-plex-mono": "^5.2.7",
     "@fontsource/instrument-serif": "^5.2.6",
     "@fontsource/spectral": "^5.2.6",
